@@ -55,7 +55,7 @@ export default function ExampleModel() {
     <Canvas camera={{ position: [0, 2, 5] }} shadows>
       <AmbientLighting />
       <StaticLight position={[5, 10, 2]} />
-      <Environment preset="apartment" />
+      <Environment preset="forest" />
       <Model
         path="/models/no-moniter.glb"
         position={[0, 0, 0]}
