@@ -4,6 +4,12 @@ import { OrbitControls, useHelper } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
+import {
+  EffectComposer,
+  Outline,
+  Select,
+  Selection,
+} from "@react-three/postprocessing";
 
 function Model({ path, position, scale }) {
   const gltf = useLoader(GLTFLoader, path);
@@ -77,11 +83,24 @@ export default function ExampleModel() {
         position={[0, -0.6, 0]}
         scale={[1, 1, 1]}
       />
-      <Model
-        path="/models/moniter.glb"
-        position={[0, -0.6, 0]}
-        scale={[1, 1, 1]}
-      />
+      <Selection>
+        <EffectComposer multisampling={8} autoClear={false}>
+          <Select enabled>
+            <Model
+              path="/models/moniter.glb"
+              position={[0, -0.6, 0]}
+              scale={[1, 1, 1]}
+            />
+          </Select>
+          <Outline
+            blur
+            visibleEdgeColor="white"
+            edgeStrength={50}
+            width={1800}
+          />
+        </EffectComposer>
+      </Selection>
+
       <OrbitControls
         enablePan={false}
         enableZoom={false}
