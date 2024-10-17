@@ -1,6 +1,8 @@
 import React from "react";
 import Room from "./components/Room";
+import Camera from "./components/Camera";
 import WorkDetails from "./components/Work";
+import { Canvas } from "@react-three/fiber";
 
 function App() {
   return (
