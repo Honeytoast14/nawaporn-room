@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import Stats from "three/examples/jsm/libs/stats.module";
-import { useFrame } from "@react-three/fiber"; // Don't forget this if you use `useFrame`
+import { useFrame } from "@react-three/fiber";
 
 export function FPSStats() {
   const statsRef = useRef();
@@ -22,8 +22,4 @@ export function FPSStats() {
   });
 
   return null;
-}
-
-export function GridHelperGround() {
-  return <gridHelper args={[10, 10]} />;
 }
