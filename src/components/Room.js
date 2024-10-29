@@ -3,9 +3,8 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { useHelper } from "@react-three/drei";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
-import { FPSStats } from "./FPS";
-import { Mesh } from "three/src/Three.js";
 import Camera from "./Camera";
+import { FPSStats } from "./FPS";
 
 function Model({ path }) {
   const gltf = useLoader(GLTFLoader, path);
@@ -48,7 +47,7 @@ function AnotherLight() {
       position={[0, 5, 0]}
       color={"#fff4c7"}
       groundColor={new THREE.Color("#ff77af")}
-      intensity={0.7}
+      intensity={0.6}
     />
   );
 }
@@ -64,8 +63,8 @@ export default function Room() {
     >
       <AnotherLight />
       <SunLight />
-      <ambientLight color={"#ffffff"} intensity={1} />
-      <Model path="/models/room_with_texture.glb" />
+      <ambientLight color={"#ffffff"} intensity={0.9} />
+      <Model path="/models/room_model.glb" />
       <mesh rotation-x={-Math.PI / 2} position={[0, -1.3, 0]} receiveShadow>
         <planeGeometry args={[100, 100]} />
         <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
@@ -73,7 +72,7 @@ export default function Room() {
       <Camera />
       {/* <gridHelper args={[10, 10]} /> */}
       {/* <axesHelper args={[5]} /> */}
-      <FPSStats />
+      {/* <FPSStats /> */}
     </Canvas>
   );
 }
