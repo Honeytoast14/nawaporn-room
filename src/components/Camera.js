@@ -26,7 +26,33 @@ function FollowMouse() {
   });
 }
 
-export default function Camera() {
+function SetCamera({ nameOfPage }) {
+  const cameraPosition = [
+    {
+      name: "Home",
+      position: [5.5, 5, 5],
+      zoom: 200,
+    },
+    {
+      name: "Work",
+      position: [1, 2, 2.5],
+      zoom: 900,
+    },
+  ];
+
+  const [select, setSelect] = useState("");
+  return (
+    <OrthographicCamera
+      makeDefault
+      position={cameraPosition[0].position}
+      zoom={cameraPosition[0].zoom}
+      near={0.1}
+      far={1000}
+    />
+  );
+}
+
+export default function Camera({ page }) {
   return (
     <>
       <FollowMouse />
@@ -35,13 +61,7 @@ export default function Camera() {
         enableZoom={false}
         enableRotate={false}
       />
-      <OrthographicCamera
-        makeDefault
-        position={[5.5, 5, 5]}
-        zoom={200}
-        near={0.1}
-        far={1000}
-      />
+      <SetCamera nameOfPage={page} />
     </>
   );
 }

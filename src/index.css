@@ -3,3 +3,15 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+@layer utilities {
+    /* Chrome, Safari and Opera */
+    .scrollbar-hidden::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .scrollbar-hidden {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+}
