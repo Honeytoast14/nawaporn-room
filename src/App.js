@@ -1,15 +1,20 @@
 import React from "react";
-import Room from "./components/Room";
-import WorkDetails from "./components/Work";
-import { Canvas } from "@react-three/fiber";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/pages/Navbar";
+import Home from "./components/pages/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Work from "./components/pages/Work";
 
 function App() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      {/* <WorkDetails /> */}
-      <Navbar />
-      <Room className="z-0" />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navbar />}>
+            <Route index element={<Home />} />
+            <Route path="work" element={<Work />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
