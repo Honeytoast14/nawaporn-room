@@ -1,78 +1,94 @@
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import React, { useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Tween, Easing } from "@tweenjs/tween.js";
-import React, { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import TWEEN from "@tweenjs/tween.js";
 
-function CameraAnimation({ shouldAnimate }) {
-  const positionCam = useRef([1, 5, 3]);
-  const zoomValue = useRef(50); // Starting zoom
+const Camera = ({ zoomLevel }) => {
   const cameraRef = useRef();
 
-  // Tween for camera position
-  const positionTween = useRef(
-    new Tween(positionCam.current)
-      .to([4, 8, 1], 2000)
-      .easing(Easing.Quadratic.Out)
-  );
-
-  // Tween for camera zoom
-  const zoomTween = useRef(
-    new Tween(zoomValue)
-      .to({ current: 200 }, 2000)
-      .easing(Easing.Quadratic.Out)
-      .onUpdate(() => {
-        if (cameraRef.current) {
-          cameraRef.current.zoom = zoomValue.current;
-          cameraRef.current.updateProjectionMatrix(); // Needed for zoom changes
-        }
-      })
-  );
-
-  useEffect(() => {
-    if (shouldAnimate) {
-      //   positionTween.current.start();
-      zoomTween.current.start();
-    }
-  }, [shouldAnimate]);
-
   useFrame(() => {
-    // positionTween.current.update();
-    zoomTween.current.update();
-    // if (cameraRef.current) {
-    //   cameraRef.current.position.set(...positionCam.current);
-    // }
+    TWEEN.update(); // อัพเดต TWEEN ในทุกเฟรม
+    if (cameraRef.current) {
+      cameraRef.current.position.z = zoomLevel.current; // ปรับตำแหน่งกล้องตามค่า zoom
+      console.log("Current Zoom Level:", zoomLevel.current); // แสดงค่า zoom ในคอนโซล
+    }
   });
 
   return (
-    <OrthographicCamera
-      ref={cameraRef}
-      makeDefault
-      zoom={zoomValue.current}
-      position={positionCam.current}
-    />
+    <perspectiveCamera ref={cameraRef} position={[0, 0, zoomLevel.current]} />
   );
-}
+};
 
-export default function TestCam() {
-  const [animate, setAnimate] = useState(false);
+const Box = () => {
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="orange" />
+    </mesh>
+  );
+};
+
+const Sphere = () => {
+  return (
+    <mesh position={[2, 0, 0]}>
+      <sphereGeometry args={[0.5, 32, 32]} />
+      <meshStandardMaterial color="blue" />
+    </mesh>
+  );
+};
+
+const Plane = () => {
+  return (
+    <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[5, 5]} />
+      <meshStandardMaterial color="green" />
+    </mesh>
+  );
+};
+
+const TestCam = () => {
+  const zoomLevel = useRef(900); // เริ่มต้นที่ 900
+
+  // ฟังก์ชันสำหรับซูม
+  const zoom = (targetZoom) => {
+    console.log("Zooming to:", targetZoom); // แสดงเป้าหมายการซูมในคอนโซล
+    const zoomTween = new TWEEN.Tween({ zoom: zoomLevel.current })
+      .to({ zoom: targetZoom }, 1000) // ระยะเวลา 1 วินาที
+      .onUpdate(({ zoom }) => {
+        zoomLevel.current = zoom; // อัปเดตค่า zoomLevel
+        console.log("Updated Zoom Level:", zoom); // แสดงค่า zoom ที่อัปเดต
+      })
+      .start();
+  };
 
   return (
     <>
       <Canvas>
-        <ambientLight intensity={1} />
+        <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
-        <mesh position={[0, 2, 0]}>
-          <boxGeometry />
-          <meshStandardMaterial color="orange" />
-        </mesh>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.5, 0]}>
-          <planeGeometry args={[10, 10]} />
-          <meshStandardMaterial color="green" />
-        </mesh>
-        <OrbitControls />
-        <CameraAnimation shouldAnimate={animate} />
+        <Camera zoomLevel={zoomLevel} />
+        <Box />
+        <Sphere />
+        <Plane />
       </Canvas>
-      <button onClick={() => setAnimate(true)}>Move Camera and Zoom</button>
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          backgroundColor: "black",
+          color: "white",
+        }}
+      >
+        <button className="bg-main-green" onClick={() => zoom(200)}>
+          Zoom Out
+        </button>
+        <button className="bg-main-pink" onClick={() => zoom(900)}>
+          Zoom In
+        </button>
+      </div>
     </>
   );
-}
+};
+
+export default TestCam;

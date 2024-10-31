@@ -1,4 +1,8 @@
 import React from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
   const workData = [
@@ -27,27 +31,32 @@ const Work = () => {
       link: "https://qallz-real.web.app/",
     },
   ];
+
   return (
-    <div className="scrollbar-hidden">
+    <div className="flex scrollbar-hidden">
       <div className="absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black">
-        <h1 className="text-7xl ml-10 mt-52">Works</h1>
-        <div className="bg-main-pink h-full w-4/5 mt-8">
-          <>
-            {workData.map((item, index) => (
-              <div className="py-32 px-12 border-b-8 border-main-white border-dashed">
-                <h1 className="text-3xl font-bold mb-4">{item.headline}</h1>
-                <p className="text-xl mb-7">{item.caption}</p>
-                <a rel="" href={item.link} target="_blank">
-                  <button className="bg-main-yellow h-12 w-36 text-xl border-solid border border-main-black rounded-xl">
-                    {index == 0 ? "Try To Play" : "Visit Website"}
-                  </button>
-                </a>
-              </div>
-            ))}
-          </>
+        <h1 className="text-7xl ml-10 pt-52">Works</h1>
+        <div
+          className="bg-main-pink w-4/5 mt-8"
+          style={{ height: `calc(100vh - 312px)` }}
+        >
+          {workData.map((item, index) => (
+            <div
+              className="work-item py-32 px-12 border-b-8 border-main-white border-dashed"
+              key={index}
+            >
+              <h1 className="text-3xl font-bold mb-4">{item.headline}</h1>
+              <p className="text-xl mb-7">{item.caption}</p>
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                <button className="bg-main-yellow h-12 w-36 text-xl border-solid border border-main-black rounded-xl">
+                  {index === 0 ? "Try To Play" : "Visit Website"}
+                </button>
+              </a>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="absolute top-0 right-0 bg-main-pink w-8 h-full "></div>
+      <div className="absolute top-0 right-0 bg-main-pink w-8 h-full"></div>
     </div>
   );
 };
