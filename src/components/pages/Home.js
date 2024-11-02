@@ -84,10 +84,9 @@ function SetCamera({ nameOfPage }) {
   useEffect(() => {
     if (!nameOfPage) return;
 
-    let targetZoom = 200; // Default zoom value
-    let targetPosition = [5.5, 5, 5]; // Default position
+    let targetZoom = 200;
+    let targetPosition = [5.5, 5, 5];
 
-    // Set target values based on page
     if (nameOfPage === "Work") {
       targetZoom = 900;
       targetPosition = [13, 5, 6];
@@ -118,7 +117,7 @@ function SetCamera({ nameOfPage }) {
       .start();
 
     positionTween.current
-      .to({ current: targetPosition }, 2000)
+      .to({ current: targetPosition }, 1600)
       .onComplete(() => {
         positionValue.current = targetPosition;
       })
@@ -163,6 +162,7 @@ export default function Home({ camera }) {
         enablePan={false}
         enableZoom={false}
         enableRotate={false}
+        enableDamping={false}
       />
       <SetCamera nameOfPage={camera} />
     </Canvas>
