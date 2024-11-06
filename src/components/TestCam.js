@@ -1,89 +1,89 @@
-import React, { useEffect, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useRef, useState } from "react";
 import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
 import TWEEN from "@tweenjs/tween.js";
 
-const Camera = ({ zoomLevel }) => {
+const TestCam = () => {
+  const [zoomed, setZoomed] = useState(false);
   const cameraRef = useRef();
 
-  useFrame(() => {
-    TWEEN.update(); // อัพเดต TWEEN ในทุกเฟรม
-    if (cameraRef.current) {
-      cameraRef.current.position.z = zoomLevel.current;
-      console.log("Current Zoom Level:", zoomLevel.current);
-    }
-  });
+  // Function to handle zoom and camera position transition using TWEEN
+  const toggleZoom = () => {
+    const camera = cameraRef.current;
 
-  return (
-    <perspectiveCamera ref={cameraRef} position={[0, 0, zoomLevel.current]} />
-  );
-};
+    // Define the starting and ending camera positions and FOV (field of view)
+    const startPosition = camera.position.clone();
+    const endPosition = zoomed
+      ? new THREE.Vector3(0, 0, 5)
+      : new THREE.Vector3(0, 0, 2);
+    const startFov = camera.fov;
+    const endFov = zoomed ? 75 : 30;
 
-const Box = () => {
-  return (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
-  );
-};
-
-const Sphere = () => {
-  return (
-    <mesh position={[2, 0, 0]}>
-      <sphereGeometry args={[0.5, 32, 32]} />
-      <meshStandardMaterial color="blue" />
-    </mesh>
-  );
-};
-
-const Plane = () => {
-  return (
-    <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[5, 5]} />
-      <meshStandardMaterial color="green" />
-    </mesh>
-  );
-};
-
-const TestCam = () => {
-  const zoom = (targetZoom) => {
-    console.log("Zooming to:", targetZoom);
-    const zoomTween = new TWEEN.Tween({ zoom: zoomLevel.current })
-      .to({ zoom: targetZoom }, 1000)
-      .onUpdate(({ zoom }) => {
-        zoomLevel.current = zoom;
-        console.log("Updated Zoom Level:", zoom);
+    // Create a new TWEEN for camera position and FOV change
+    new TWEEN.Tween(startPosition)
+      .to(endPosition, 1000) // Duration of the animation in ms
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(() => {
+        camera.position.copy(startPosition);
       })
       .start();
+
+    new TWEEN.Tween({ fov: startFov })
+      .to({ fov: endFov }, 1000) // Duration of the animation in ms
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(({ fov }) => {
+        camera.fov = fov;
+        camera.updateProjectionMatrix();
+      })
+      .start();
+
+    // Toggle the zoomed state
+    setZoomed(!zoomed);
   };
+
+  // Use the frame hook to update TWEEN
+  useFrame(() => {
+    TWEEN.update();
+  });
 
   return (
     <>
       <Canvas>
+        {/* Camera with ref */}
+        <perspectiveCamera
+          ref={cameraRef}
+          position={[0, 0, 5]}
+          fov={75} // Initial FOV
+          near={0.1}
+          far={1000}
+        />
+
+        {/* Box */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color="orange" />
+        </mesh>
+
+        {/* Lights */}
         <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <Camera zoomLevel={zoomLevel} />
-        <Box />
-        <Sphere />
-        <Plane />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
       </Canvas>
-      <div
+
+      {/* Button to trigger zoom */}
+      <button
         style={{
           position: "absolute",
           top: "20px",
           left: "20px",
-          backgroundColor: "black",
-          color: "white",
+          padding: "10px",
+          backgroundColor: "lightblue",
+          border: "none",
+          cursor: "pointer",
         }}
+        onClick={toggleZoom}
       >
-        <button className="bg-main-green" onClick={() => zoom(200)}>
-          Zoom Out
-        </button>
-        <button className="bg-main-pink" onClick={() => zoom(900)}>
-          Zoom In
-        </button>
-      </div>
+        Zoom
+      </button>
     </>
   );
 };

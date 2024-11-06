@@ -8,6 +8,7 @@ import * as THREE from "three";
 function Model({ path }) {
   const gltf = useLoader(GLTFLoader, path);
   const modelRef = useRef();
+  const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
@@ -17,6 +18,26 @@ function Model({ path }) {
       }
     });
   }, [gltf]);
+
+  //Model Follow Mouse
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
+      mousePos.current = { x, y };
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useFrame(() => {
+    if (modelRef.current) {
+      modelRef.current.rotation.y = mousePos.current.x * 0.02;
+      modelRef.current.rotation.x = mousePos.current.y * 0.002;
+    }
+  });
+
   return <primitive object={gltf.scene} position={[0, 0, 0]} ref={modelRef} />;
 }
 
@@ -61,41 +82,41 @@ function SetCamera({ nameOfPage }) {
   }, []);
 
   const zoomTween = useRef(
-    new Tween(zoomValue).easing(Easing.Quadratic.Out).onUpdate(() => {
-      if (cameraRef.current) {
-        cameraRef.current.zoom = zoomValue.current;
-        cameraRef.current.updateProjectionMatrix();
-      }
-    })
+    new Tween({ current: zoomValue.current })
+      .easing(Easing.Quadratic.Out)
+      .onUpdate(({ current }) => {
+        if (cameraRef.current) {
+          cameraRef.current.zoom = current;
+          cameraRef.current.updateProjectionMatrix();
+        }
+      })
   );
 
   const positionTween = useRef(
-    new Tween(positionValue).easing(Easing.Quadratic.Out).onUpdate(() => {
-      if (cameraRef.current) {
-        cameraRef.current.position.set(
-          positionValue.current[0],
-          positionValue.current[1],
-          positionValue.current[2]
-        );
-      }
-    })
+    new Tween({ current: positionValue.current })
+      .easing(Easing.Quadratic.Out)
+      .onUpdate(({ current }) => {
+        if (cameraRef.current) {
+          cameraRef.current.position.set(current[0], current[1], current[2]);
+        }
+      })
   );
 
   useEffect(() => {
     if (!nameOfPage) return;
 
-    let targetZoom = 200;
-    let targetPosition = [5.5, 5, 5];
+    let targetZoom = zoomValue.current;
+    let targetPosition = [...positionValue.current];
 
     if (nameOfPage === "Work") {
-      targetZoom = 900;
-      targetPosition = [13, 5, 6];
+      targetZoom = 1000;
+      targetPosition = [6.1, 5.9, 6];
     } else if (nameOfPage === "About") {
       targetZoom = 2600;
-      targetPosition = [25, 19, 26];
+      targetPosition = [6.8, 6.25, 6.1];
     } else if (nameOfPage === "Contact") {
-      targetZoom = 1050;
-      targetPosition = [9, 10, 19];
+      targetZoom = 1250;
+      targetPosition = [6.1, 5.35, 5.08];
     } else if (nameOfPage === "Home") {
       targetZoom = 200;
       targetPosition = [5.5, 5, 5];
@@ -104,22 +125,30 @@ function SetCamera({ nameOfPage }) {
     if (zoomTween.current.isPlaying()) {
       zoomTween.current.stop();
     }
-
     if (positionTween.current.isPlaying()) {
       positionTween.current.stop();
     }
 
-    zoomTween.current
-      .to({ current: targetZoom }, 1100)
-      .onComplete(() => {
-        zoomValue.current = targetZoom;
+    zoomTween.current = new Tween({ current: zoomValue.current })
+      .to({ current: targetZoom }, 1500)
+      .easing(Easing.Quadratic.Out)
+      .onUpdate(({ current }) => {
+        zoomValue.current = current;
+        if (cameraRef.current) {
+          cameraRef.current.zoom = current;
+          cameraRef.current.updateProjectionMatrix();
+        }
       })
       .start();
 
-    positionTween.current
-      .to({ current: targetPosition }, 1600)
-      .onComplete(() => {
-        positionValue.current = targetPosition;
+    positionTween.current = new Tween({ current: positionValue.current })
+      .to({ current: targetPosition }, 1800)
+      .easing(Easing.Quadratic.Out)
+      .onUpdate(({ current }) => {
+        positionValue.current = current;
+        if (cameraRef.current) {
+          cameraRef.current.position.set(current[0], current[1], current[2]);
+        }
       })
       .start();
   }, [nameOfPage]);
@@ -158,12 +187,7 @@ export default function Home({ camera }) {
         <planeGeometry args={[100, 100]} />
         <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
       </mesh>
-      <OrbitControls
-        enablePan={false}
-        enableZoom={false}
-        enableRotate={false}
-        enableDamping={false}
-      />
+      <OrbitControls enabled={false} />
       <SetCamera nameOfPage={camera} />
     </Canvas>
   );

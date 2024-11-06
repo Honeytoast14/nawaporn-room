@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import emailjs from "@emailjs/browser";
@@ -18,7 +18,7 @@ const Mailto = ({ email, subject, body, children }) => {
   );
 };
 
-const Input = ({ label, type, name, placeholder }) => {
+const Input = ({ label, type, name, placeholder, pattern }) => {
   const {
     register,
     formState: { errors },
@@ -47,10 +47,8 @@ const Input = ({ label, type, name, placeholder }) => {
         type={type}
         placeholder={placeholder}
         {...register(name, {
-          required: {
-            value: true,
-            message: `required`,
-          },
+          required: true,
+          pattern: pattern,
         })}
       />
     </div>
@@ -88,7 +86,6 @@ const Textarea = ({ name, placeholder }) => {
         {...register(name, {
           required: {
             value: true,
-            message: "required",
           },
         })}
       />
@@ -96,32 +93,65 @@ const Textarea = ({ name, placeholder }) => {
   );
 };
 
+const PopUp = ({ closedPopUp }) => {
+  return (
+    <div className="w-full h-full bg-black bg-opacity-40 absolute top-0 z-10 flex items-center justify-center ">
+      <div className="bg-main-white w-2/6 h-2/5 rounded-3xl relative">
+        <FontAwesomeIcon
+          icon={faXmark}
+          className="absolute right-0 top-0 mr-4 mt-4 size-9 hover:cursor-pointer"
+          onClick={closedPopUp}
+        />
+        <div className="flex flex-col items-center justify-center w-full h-full ">
+          <p className="text-3xl">The email has been sent&#128077;</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Contact() {
   const form = useRef();
   const methods = useForm();
+  var [showPopUp, setShowPopUp] = useState(false);
 
-  const sendEmail = (e) => {
+  const sendEmail = (data, e) => {
+    // console.log(data);
     e.preventDefault();
 
     emailjs
-      .sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", form.current, {
-        publicKey: "YOUR_PUBLIC_KEY",
+      .sendForm("service_h9wrhar", "template_i29fera", form.current, {
+        publicKey: "6-u1hdQTB2cI-gTxw",
       })
       .then(
         () => {
-          console.log("SUCCESS!");
+          // console.log("SUCCESS!");
+          setShowPopUp(true);
         },
         (error) => {
-          console.log("FAILED...", error.text);
+          // console.log("FAILED...", error.text);
         }
       );
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const name_validation = {
+    label: "Your Name",
+    type: "text",
+    name: "user_name",
+    placeholder: "Name...",
+  };
+
+  const email_validation = {
+    label: "Your Email",
+    type: "email",
+    name: "user_email",
+    placeholder: "Email...",
+    pattern:
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   };
   return (
     <>
+      {showPopUp && <PopUp closedPopUp={() => setShowPopUp(false)} />}
       <div className="absolute top-0 left-0 w-6/12 h-full bg-main-white text-main-black">
         <h1 className="text-7xl ml-28 pt-36">Contact</h1>
         <div
@@ -130,22 +160,13 @@ export default function Contact() {
         >
           <FormProvider {...methods}>
             <form
+              ref={form}
               className="w-4/6"
               noValidate
-              onSubmit={methods.handleSubmit(onSubmit)}
+              onSubmit={methods.handleSubmit(sendEmail)}
             >
-              <Input
-                label={"Your Name"}
-                type={"text"}
-                name={"user_name"}
-                placeholder={"Name..."}
-              />
-              <Input
-                label={"Your Email"}
-                type={"email"}
-                name={"user_email"}
-                placeholder={"Email..."}
-              />
+              <Input {...name_validation} />
+              <Input {...email_validation} />
               <Textarea name={"message"} placeholder={"Message..."} />
               <div className="flex justify-center items-center">
                 <input
@@ -177,7 +198,11 @@ export default function Contact() {
                 className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
               />
             </a>
-            <Mailto email={"Email"} subject="Hello & Welcome" body="">
+            <Mailto
+              email={"nawaporn.navis@gmail.com"}
+              subject="Hello & Welcome"
+              body=""
+            >
               <FontAwesomeIcon
                 icon={faEnvelope}
                 className="size-10 hover:scale-125 duration-100 hover:duration-150 ease-in-out"
