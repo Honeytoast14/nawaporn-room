@@ -9,8 +9,8 @@ const Camera = ({ zoomLevel }) => {
   useFrame(() => {
     TWEEN.update(); // อัพเดต TWEEN ในทุกเฟรม
     if (cameraRef.current) {
-      cameraRef.current.position.z = zoomLevel.current; // ปรับตำแหน่งกล้องตามค่า zoom
-      console.log("Current Zoom Level:", zoomLevel.current); // แสดงค่า zoom ในคอนโซล
+      cameraRef.current.position.z = zoomLevel.current;
+      console.log("Current Zoom Level:", zoomLevel.current);
     }
   });
 
@@ -47,16 +47,13 @@ const Plane = () => {
 };
 
 const TestCam = () => {
-  const zoomLevel = useRef(900); // เริ่มต้นที่ 900
-
-  // ฟังก์ชันสำหรับซูม
   const zoom = (targetZoom) => {
-    console.log("Zooming to:", targetZoom); // แสดงเป้าหมายการซูมในคอนโซล
+    console.log("Zooming to:", targetZoom);
     const zoomTween = new TWEEN.Tween({ zoom: zoomLevel.current })
-      .to({ zoom: targetZoom }, 1000) // ระยะเวลา 1 วินาที
+      .to({ zoom: targetZoom }, 1000)
       .onUpdate(({ zoom }) => {
-        zoomLevel.current = zoom; // อัปเดตค่า zoomLevel
-        console.log("Updated Zoom Level:", zoom); // แสดงค่า zoom ที่อัปเดต
+        zoomLevel.current = zoom;
+        console.log("Updated Zoom Level:", zoom);
       })
       .start();
   };

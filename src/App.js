@@ -3,6 +3,7 @@ import Navbar from "./components/pages/Navbar";
 import Home from "./components/pages/Home";
 import Work from "./components/pages/Work";
 import About from "./components/pages/About";
+import Contact from "./components/pages/Contact";
 
 function App() {
   const [select, setSelect] = useState("Home");
@@ -13,6 +14,7 @@ function App() {
       <Home camera={select} style={{ flex: 1 }} />
       {select === "Work" && <Work />}
       {select === "About" && <About />}
+      {select === "Contact" && <Contact />}
     </div>
   );
 }

@@ -9,7 +9,6 @@ const About = () => {
           className="bg-main-green w-11/12 mt-8 px-12 pt-24"
           style={{ height: `calc(100vh - 312px)` }}
         >
-          <div />
           <p className="text-2xl">
             Hello, my name is Nawaporn Sriprathet, a Front-end Web Developer
             skilled in React and Tailwind CSS. As a recent university graduate,

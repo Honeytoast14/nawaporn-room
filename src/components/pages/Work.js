@@ -34,7 +34,7 @@ const WorkItem = ({ headline, caption, link, buttonText, isLast }) => {
       <h1 className="text-3xl font-bold mb-4">{headline}</h1>
       <p className="text-xl mb-7">{caption}</p>
       <a href={link} target="_blank" rel="noopener noreferrer">
-        <button className="bg-main-yellow h-12 w-36 text-xl border-solid border border-main-black rounded-xl">
+        <button className="bg-main-yellow h-12 w-36 text-xl  rounded-xl hover-button">
           {buttonText}
         </button>
       </a>
@@ -79,7 +79,7 @@ const Work = () => {
             headline={item.headline}
             caption={item.caption}
             link={item.link}
-            buttonText={item[0] ? "Try To Play" : "Visit Website"}
+            buttonText={index === 0 ? "Try To Play" : "Visit Website"}
             isLast={index === workData.length - 1}
           />
         ))}

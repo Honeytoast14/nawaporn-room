@@ -15,3 +15,11 @@
       -ms-overflow-style: none; /* IE and Edge */
     }
   }
+
+  .label-style{
+    @apply mb-2 block
+  }
+
+  .hover-button{
+    @apply hover:border-solid hover:border hover:border-main-black hover:scale-110 hover:duration-150 duration-150 ease-in-out
+  }
