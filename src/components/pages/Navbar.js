@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Navbar = ({ onNavClick, activeNav }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const navText = [
     { text: "Home" },
     { text: "Work" },
@@ -8,8 +10,20 @@ const Navbar = ({ onNavClick, activeNav }) => {
     { text: "Contact" },
   ];
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="absolute top-0 right-0 z-30 text-main-black h-48 w-52 flex pl-5">
+    <div
+      className={`absolute top-0 right-0 z-10 text-main-black h-48 w-52 flex pl-5 transition-opacity duration-1000 ease-in-out ${
+        isVisible ? `opacity-100` : `opacity-0`
+      }`}
+    >
       {navText.map((item) => (
         <div
           key={item.text}

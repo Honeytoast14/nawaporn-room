@@ -1,14 +1,19 @@
 import React, { useRef, useEffect } from "react";
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import {
+  OrbitControls,
+  OrthographicCamera,
+  useAnimations,
+} from "@react-three/drei";
 import { useFrame, useLoader, Canvas } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Easing, Tween } from "@tweenjs/tween.js";
 import * as THREE from "three";
 
-function Model({ path }) {
+function Model({ path, playAnimation }) {
   const gltf = useLoader(GLTFLoader, path);
   const modelRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
+  const { actions, names } = useAnimations(gltf.animations, modelRef);
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
@@ -17,10 +22,27 @@ function Model({ path }) {
         child.receiveShadow = true;
       }
     });
-  }, [gltf]);
+    names.forEach((clip) => {
+      const action = actions[clip];
+      action.setLoop(THREE.LoopOnce);
+      action.clampWhenFinished = true;
+      action.play();
+    });
 
-  //Model Follow Mouse
-  useEffect(() => {
+    if (playAnimation === "Contact" && actions["phoneRing"]) {
+      const action = actions["phoneRing"];
+
+      const playWithDelay = () => {
+        action.clampWhenFinished = true;
+        setTimeout(() => {
+          action.reset().play();
+          action.setLoop(THREE.LoopRepeat, 4);
+        }, 2000);
+      };
+      playWithDelay();
+    }
+
+    //Model follow mouse
     const handleMouseMove = (event) => {
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -29,7 +51,7 @@ function Model({ path }) {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [gltf, actions, names, playAnimation]);
 
   useFrame(() => {
     if (modelRef.current) {
@@ -170,7 +192,7 @@ function SetCamera({ nameOfPage }) {
   );
 }
 
-export default function Home({ camera }) {
+export default function Home({ namePage }) {
   return (
     <Canvas
       shadows
@@ -182,13 +204,13 @@ export default function Home({ camera }) {
       <AnotherLight />
       <SunLight />
       <ambientLight color={"#ffffff"} intensity={0.9} />
-      <Model path="/models/room_model.glb" />
+      <Model path="/models/room.glb" playAnimation={namePage} />
       <mesh rotation-x={-Math.PI / 2} position={[0, -1.3, 0]} receiveShadow>
         <planeGeometry args={[100, 100]} />
         <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
       </mesh>
       <OrbitControls enabled={false} />
-      <SetCamera nameOfPage={camera} />
+      <SetCamera nameOfPage={namePage} />
     </Canvas>
   );
 }
