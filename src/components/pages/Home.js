@@ -9,6 +9,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Easing, Tween } from "@tweenjs/tween.js";
 import * as THREE from "three";
 
+import me from "../../assets/imgs/nintendoSetting.png";
+
 import learn2safe from "../../assets/videos/learn2safe.mp4";
 import solar from "../../assets/videos/solar.mp4";
 import qallz from "../../assets/videos/qallz.mp4";
@@ -22,7 +24,7 @@ function Model({ path, navName }) {
   const videoTexture = useRef(
     new THREE.VideoTexture(document.getElementById("video"))
   ).current;
-
+  const imgTexture = new THREE.TextureLoader().load(me);
   useEffect(() => {
     if (videoTexture) {
       videoTexture.wrapS = THREE.RepeatWrapping;
@@ -34,6 +36,16 @@ function Model({ path, navName }) {
       videoTexture.needsUpdate = true;
     }
   }, [videoTexture]);
+
+  useEffect(() => {
+    if (imgTexture) {
+      imgTexture.wrapS = THREE.RepeatWrapping;
+      imgTexture.wrapT = THREE.RepeatWrapping;
+      imgTexture.rotation = 2 * Math.PI;
+      imgTexture.colorSpace = THREE.SRGBColorSpace;
+      imgTexture.flipY = false;
+    }
+  }, [imgTexture]);
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
@@ -49,6 +61,17 @@ function Model({ path, navName }) {
             color: new THREE.Color("rgb(255, 255, 255)"),
           });
           videoTexture.needsUpdate = true;
+        } else if (gltf.materials && gltf.materials["black_main"]) {
+          child.material = gltf.materials["black_main"];
+        }
+      }
+      //normal don't have 001
+      if (child.name === "nintendoScreen001") {
+        if (navName === "About" && imgTexture) {
+          child.material = new THREE.MeshBasicMaterial({
+            map: imgTexture,
+            toneMapped: false,
+          });
         } else if (gltf.materials && gltf.materials["black_main"]) {
           child.material = gltf.materials["black_main"];
         }
@@ -78,7 +101,7 @@ function Model({ path, navName }) {
         playWithDelay();
       }
     }
-  }, [gltf, actions, names, navName, videoTexture]);
+  }, [gltf, actions, names, navName, videoTexture, imgTexture]);
 
   useEffect(() => {
     //Model follow mouse
@@ -94,7 +117,7 @@ function Model({ path, navName }) {
 
   useFrame(() => {
     if (modelRef.current) {
-      modelRef.current.rotation.y = mousePos.current.x * 0.02;
+      modelRef.current.rotation.y = mousePos.current.x * 0.015;
       modelRef.current.rotation.x = mousePos.current.y * 0.002;
     }
   });
@@ -173,8 +196,8 @@ function SetCamera({ nameOfPage }) {
       targetZoom = 1250;
       targetPosition = [6, 5.85, 6];
     } else if (nameOfPage === "About") {
-      targetZoom = 2600;
-      targetPosition = [6.8, 6.25, 6.1];
+      targetZoom = 4500;
+      targetPosition = [6.7, 6.21, 6.12];
     } else if (nameOfPage === "Contact") {
       targetZoom = 1250;
       targetPosition = [6.1, 5.35, 5.08];

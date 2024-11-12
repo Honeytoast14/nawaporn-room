@@ -26,7 +26,7 @@ const WorkItem = ({
         end: "120% 50%",
         onEnter: () => onEnterHeadline(headline),
         onEnterBack: () => onEnterHeadline(headline),
-        markers: true,
+        markers: false,
       },
     });
   });
