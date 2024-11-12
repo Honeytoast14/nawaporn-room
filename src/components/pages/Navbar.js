@@ -20,7 +20,7 @@ const Navbar = ({ onNavClick, activeNav }) => {
 
   return (
     <div
-      className={`absolute top-0 right-0 z-10 text-main-black h-48 w-52 flex pl-5 transition-opacity duration-1000 ease-in-out ${
+      className={`absolute top-0 right-0 z-20 text-main-black h-48 w-52 flex pl-5 transition-opacity duration-1000 ease-in-out ${
         isVisible ? `opacity-100` : `opacity-0`
       }`}
     >

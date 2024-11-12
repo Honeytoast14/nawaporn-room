@@ -152,7 +152,7 @@ export default function Contact() {
   return (
     <>
       {showPopUp && <PopUp closedPopUp={() => setShowPopUp(false)} />}
-      <div className="absolute top-0 left-0 w-6/12 h-full bg-main-white text-main-black">
+      <div className="absolute top-0 left-0 w-6/12 h-full bg-main-white text-main-black z-10">
         <h1 className="text-7xl ml-28 pt-36">Contact</h1>
         <div
           className="bg-main-yellow w-11/12 mt-8 px-11 pt-20 absolute right-0 flex flex-row"

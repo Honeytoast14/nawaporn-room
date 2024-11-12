@@ -19,11 +19,11 @@ export default function Welcome() {
   }, []);
 
   return (
-    <div className="absolute top-0 z-40 w-full h-full bg-second_white">
+    <div className="absolute top-0 z-30 w-full h-full bg-second_white">
       <div className="flex flex-col items-center justify-center w-full h-full">
         <p
           className={`text-xl text-main-black font-light transition-opacity duration-1000 ease-in-out ${
-            isVisible ? "opacity-100" : "opacity-0"
+            isVisible ? `opacity-100` : `opacity-0`
           }`}
         >
           Welcome to my portfolio.

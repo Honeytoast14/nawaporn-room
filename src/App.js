@@ -8,32 +8,21 @@ import Welcome from "./components/pages/Welcome";
 
 function App() {
   const [select, setSelect] = useState("Home");
-  const [showNavbar, setShowNavbar] = useState(false);
-  const [showHome, setShowHome] = useState(false);
-  const [showWelcome, setWelcome] = useState(true);
+  const [headline, setHeadline] = useState("");
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [showHome, setShowHome] = useState(true);
+  const [showWelcome, setWelcome] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setWelcome(false);
-    }, 3200);
+    const welcomeTimer = setTimeout(() => setWelcome(false), 3200);
+    const homeTimer = setTimeout(() => setShowHome(true), 3000);
+    const navbarTimer = setTimeout(() => setShowNavbar(true), 6000);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowHome(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowNavbar(true);
-    }, 6000);
-
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(welcomeTimer);
+      clearTimeout(homeTimer);
+      clearTimeout(navbarTimer);
+    };
   }, []);
 
   return (
@@ -44,8 +33,15 @@ function App() {
         <Navbar onNavClick={(item) => setSelect(item)} activeNav={select} />
       )}
 
-      {showHome && <Home namePage={select} style={{ flex: 1 }} />}
-      {select === "Work" && <Work />}
+      {showHome && <Home namePage={select} videoHeadline={headline} />}
+      {select === "Work" && (
+        <Work
+          headline={(newHeadline) => {
+            setHeadline(newHeadline);
+          }}
+        />
+      )}
+
       {select === "About" && <About />}
       {select === "Contact" && <Contact />}
     </div>

@@ -1,48 +1,55 @@
 import React, { useRef } from "react";
-import gsap from "gsap";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-const WorkItem = ({ headline, caption, link, buttonText, isLast }) => {
-  const itemRef = useRef();
+gsap.registerPlugin(ScrollTrigger);
+
+const WorkItem = ({
+  headline,
+  caption,
+  link,
+  buttonText,
+  isLast,
+  scroller,
+  onEnterHeadline,
+}) => {
+  const itemRef = React.useRef();
 
   useGSAP(() => {
-    gsap.fromTo(
-      itemRef.current,
-      { y: 50, opacity: 0 },
-      {
-        scrollTrigger: {
-          trigger: itemRef.current,
-          start: "top 80%",
-          end: "top 30%",
-          markers: true,
-          toggleActions: "play none none reverse",
-        },
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-      }
-    );
+    gsap.to(itemRef.current, {
+      scrollTrigger: {
+        scroller: scroller.current,
+        trigger: itemRef.current,
+        start: "top 65%",
+        end: "120% 50%",
+        onEnter: () => onEnterHeadline(headline),
+        onEnterBack: () => onEnterHeadline(headline),
+        markers: true,
+      },
+    });
   });
 
   return (
     <div
-      ref={itemRef}
       className={`bg-main-pink w-4/5 py-32 px-12 ${
         isLast ? `border-none` : `border-b-8 border-main-white border-dashed`
       }`}
     >
-      <h1 className="text-3xl font-bold mb-4">{headline}</h1>
-      <p className="text-xl mb-7">{caption}</p>
-      <a href={link} target="_blank" rel="noopener noreferrer">
-        <button className="bg-main-yellow h-12 w-36 text-xl  rounded-xl hover-button">
-          {buttonText}
-        </button>
-      </a>
+      <div ref={itemRef} className="w-auto h-auto">
+        <h1 className="text-3xl font-bold mb-4 head">{headline}</h1>
+        <p className="text-xl mb-7">{caption}</p>
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          <button className="bg-main-yellow h-12 w-36 text-xl rounded-xl hover-button">
+            {buttonText}
+          </button>
+        </a>
+      </div>
     </div>
   );
 };
 
-const Work = () => {
+const Work = ({ headline }) => {
   const workData = [
     {
       headline: "Touch The Wood",
@@ -69,9 +76,15 @@ const Work = () => {
       link: "https://qallz-real.web.app/",
     },
   ];
+
+  const scroller = useRef();
+
   return (
     <div className="flex">
-      <div className="absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black overflow-y-scroll">
+      <div
+        ref={scroller}
+        className="absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black overflow-y-auto z-10"
+      >
         <h1 className="text-7xl ml-10 pt-52 mb-8 header">Works</h1>
         {workData.map((item, index) => (
           <WorkItem
@@ -81,6 +94,8 @@ const Work = () => {
             link={item.link}
             buttonText={index === 0 ? "Try To Play" : "Visit Website"}
             isLast={index === workData.length - 1}
+            scroller={scroller}
+            onEnterHeadline={headline}
           />
         ))}
       </div>

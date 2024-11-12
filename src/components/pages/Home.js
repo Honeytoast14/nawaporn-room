@@ -9,11 +9,31 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Easing, Tween } from "@tweenjs/tween.js";
 import * as THREE from "three";
 
-function Model({ path, playAnimation }) {
+import learn2safe from "../../assets/videos/learn2safe.mp4";
+import solar from "../../assets/videos/solar.mp4";
+import qallz from "../../assets/videos/qallz.mp4";
+import touchTheWood from "../../assets/videos/touchTheWood.mp4";
+
+function Model({ path, navName }) {
   const gltf = useLoader(GLTFLoader, path);
   const modelRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
   const { actions, names } = useAnimations(gltf.animations, modelRef);
+  const videoTexture = useRef(
+    new THREE.VideoTexture(document.getElementById("video"))
+  ).current;
+
+  useEffect(() => {
+    if (videoTexture) {
+      videoTexture.wrapS = THREE.RepeatWrapping;
+      videoTexture.wrapT = THREE.RepeatWrapping;
+      videoTexture.rotation = -Math.PI / 2;
+      videoTexture.repeat.set(-4.12, 4.11);
+      videoTexture.offset.set(-0.045, 0.449);
+      videoTexture.colorSpace = THREE.SRGBColorSpace;
+      videoTexture.needsUpdate = true;
+    }
+  }, [videoTexture]);
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
@@ -21,27 +41,42 @@ function Model({ path, playAnimation }) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    });
-    names.forEach((clip) => {
-      const action = actions[clip];
-      action.setLoop(THREE.LoopOnce);
-      action.clampWhenFinished = true;
-      action.play();
+      //normal is "screen". no animation is "screen001"
+      if (child.name === "screen001") {
+        child.material = new THREE.MeshBasicMaterial({
+          map: videoTexture,
+          color: new THREE.Color("rgb(255, 255, 255)"),
+        });
+        videoTexture.needsUpdate = true;
+      }
     });
 
-    if (playAnimation === "Contact" && actions["phoneRing"]) {
-      const action = actions["phoneRing"];
-
-      const playWithDelay = () => {
+    //All animations
+    if (names != null) {
+      names.forEach((clip) => {
+        const action = actions[clip];
+        action.setLoop(THREE.LoopOnce);
         action.clampWhenFinished = true;
-        setTimeout(() => {
-          action.reset().play();
-          action.setLoop(THREE.LoopRepeat, 4);
-        }, 2000);
-      };
-      playWithDelay();
-    }
+        action.play();
+      });
 
+      //Phone ringing animation
+      if (navName === "Contact" && actions["phoneRing"]) {
+        const action = actions["phoneRing"];
+
+        const playWithDelay = () => {
+          action.clampWhenFinished = true;
+          setTimeout(() => {
+            action.reset().play();
+            action.setLoop(THREE.LoopRepeat, 4);
+          }, 2000);
+        };
+        playWithDelay();
+      }
+    }
+  }, [gltf, actions, names, navName, videoTexture]);
+
+  useEffect(() => {
     //Model follow mouse
     const handleMouseMove = (event) => {
       const x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -51,7 +86,7 @@ function Model({ path, playAnimation }) {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [gltf, actions, names, playAnimation]);
+  });
 
   useFrame(() => {
     if (modelRef.current) {
@@ -131,8 +166,8 @@ function SetCamera({ nameOfPage }) {
     let targetPosition = [...positionValue.current];
 
     if (nameOfPage === "Work") {
-      targetZoom = 1000;
-      targetPosition = [6.1, 5.9, 6];
+      targetZoom = 1250;
+      targetPosition = [6, 5.85, 6];
     } else if (nameOfPage === "About") {
       targetZoom = 2600;
       targetPosition = [6.8, 6.25, 6.1];
@@ -192,25 +227,49 @@ function SetCamera({ nameOfPage }) {
   );
 }
 
-export default function Home({ namePage }) {
+export default function Home({ namePage, videoHeadline }) {
+  let videoPath = touchTheWood;
+
+  if (videoHeadline === "Solar System") {
+    videoPath = solar;
+  } else if (videoHeadline === "Learn2Safe") {
+    videoPath = learn2safe;
+  } else if (videoHeadline === "QALLZ") {
+    videoPath = qallz;
+  }
+
   return (
-    <Canvas
-      shadows
-      gl={{
-        toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.4,
-      }}
-    >
-      <AnotherLight />
-      <SunLight />
-      <ambientLight color={"#ffffff"} intensity={0.9} />
-      <Model path="/models/room.glb" playAnimation={namePage} />
-      <mesh rotation-x={-Math.PI / 2} position={[0, -1.3, 0]} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
-      </mesh>
-      <OrbitControls enabled={false} />
-      <SetCamera nameOfPage={namePage} />
-    </Canvas>
+    <>
+      <Canvas
+        shadows
+        gl={{
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.4,
+        }}
+        className="z-10"
+      >
+        <AnotherLight />
+        <SunLight />
+        <ambientLight color={"#ffffff"} intensity={0.9} />
+        <Model path="/models/room_no_animation.glb" navName={namePage} />
+        <mesh rotation-x={-Math.PI / 2} position={[0, -1.3, 0]} receiveShadow>
+          <planeGeometry args={[100, 100]} />
+          <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
+        </mesh>
+        <OrbitControls enabled={false} />
+        <SetCamera nameOfPage={namePage} />
+      </Canvas>
+      <video
+        autoPlay
+        loop
+        muted
+        controls
+        className="w-0 h-0 absolute top-0 z-0"
+        id="video"
+      >
+        <source src={videoPath} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </>
   );
 }
