@@ -43,11 +43,15 @@ function Model({ path, navName }) {
       }
       //normal is "screen". no animation is "screen001"
       if (child.name === "screen001") {
-        child.material = new THREE.MeshBasicMaterial({
-          map: videoTexture,
-          color: new THREE.Color("rgb(255, 255, 255)"),
-        });
-        videoTexture.needsUpdate = true;
+        if (navName === "Work" && videoTexture) {
+          child.material = new THREE.MeshBasicMaterial({
+            map: videoTexture,
+            color: new THREE.Color("rgb(255, 255, 255)"),
+          });
+          videoTexture.needsUpdate = true;
+        } else if (gltf.materials && gltf.materials["black_main"]) {
+          child.material = gltf.materials["black_main"];
+        }
       }
     });
 
@@ -260,16 +264,13 @@ export default function Home({ namePage, videoHeadline }) {
         <SetCamera nameOfPage={namePage} />
       </Canvas>
       <video
+        src={videoPath}
         autoPlay
         loop
         muted
-        controls
         className="w-0 h-0 absolute top-0 z-0"
         id="video"
-      >
-        <source src={videoPath} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
     </>
   );
 }

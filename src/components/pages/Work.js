@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 const WorkItem = ({
   headline,
   caption,
+  caption2,
   link,
   buttonText,
   isLast,
@@ -38,7 +39,12 @@ const WorkItem = ({
     >
       <div ref={itemRef} className="w-auto h-auto">
         <h1 className="text-3xl font-bold mb-4 head">{headline}</h1>
-        <p className="text-xl mb-7">{caption}</p>
+        <p className="text-xl">{caption}</p>
+        {caption2 !== null ? (
+          <p className="text-xl mb-7 font-semibold text-red-500">{caption2}</p>
+        ) : (
+          ""
+        )}
         <a href={link} target="_blank" rel="noopener noreferrer">
           <button className="bg-main-yellow h-12 w-36 text-xl rounded-xl hover-button">
             {buttonText}
@@ -54,7 +60,8 @@ const Work = ({ headline }) => {
     {
       headline: "Touch The Wood",
       caption:
-        "Touch The Wood is a thesis game project. In the game, players will play as an orange cat with siblings that fall into a different dimension. While confused, the player's siblings are kidnapped by a villain. The player must explore, solve puzzles, and search for stories in various locations to find their siblings and return to the original world. This game is only available in Thai language.",
+        "Touch The Wood is a thesis game project. In the game, players will play as an orange cat with siblings that fall into a different dimension. While confused, the player's siblings are kidnapped by a villain. The player must explore, solve puzzles, and search for stories in various locations to find their siblings and return to the original world.",
+      caption2: "**This game is only available in Thai language.**",
       link: "https://drive.google.com/drive/folders/1TxpDMDayaJMrF_gY0zFZqorCZ20y_DK3?usp=sharing",
     },
     {
@@ -91,6 +98,7 @@ const Work = ({ headline }) => {
             key={index}
             headline={item.headline}
             caption={item.caption}
+            caption2={item.caption2}
             link={item.link}
             buttonText={index === 0 ? "Try To Play" : "Visit Website"}
             isLast={index === workData.length - 1}
