@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -6,10 +6,10 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import emailjs from "@emailjs/browser";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
-const Mailto = ({ email, subject, body, children }) => {
+const Mailto = ({ subject, body = "", children }) => {
   return (
     <a
-      href={`mailto:${email}?subject=${
+      href={`mailto:nawaporn.navis@gmail.com?subject=${
         encodeURIComponent(subject) || ``
       }&body=${encodeURIComponent(body) || ``}`}
     >
@@ -111,6 +111,14 @@ const PopUp = ({ closedPopUp }) => {
 };
 
 export default function Contact() {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const fadeInTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1200);
+    return () => clearTimeout(fadeInTimer);
+  }, []);
+
   const form = useRef();
   const methods = useForm();
   var [showPopUp, setShowPopUp] = useState(false);
@@ -152,7 +160,11 @@ export default function Contact() {
   return (
     <>
       {showPopUp && <PopUp closedPopUp={() => setShowPopUp(false)} />}
-      <div className="absolute top-0 left-0 w-6/12 h-full bg-main-white text-main-black z-10">
+      <div
+        className={`absolute top-0 left-0 w-6/12 h-full bg-main-white text-main-black z-10 ${
+          isVisible ? `opacity-100` : `opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
+      >
         <h1 className="text-7xl ml-28 pt-36">Contact</h1>
         <div
           className="bg-main-yellow w-11/12 mt-8 px-11 pt-20 absolute right-0 flex flex-row"
@@ -198,11 +210,7 @@ export default function Contact() {
                 className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
               />
             </a>
-            <Mailto
-              email={"nawaporn.navis@gmail.com"}
-              subject="Hello & Welcome"
-              body=""
-            >
+            <Mailto subject="Hello & Welcome">
               <FontAwesomeIcon
                 icon={faEnvelope}
                 className="size-10 hover:scale-125 duration-100 hover:duration-150 ease-in-out"

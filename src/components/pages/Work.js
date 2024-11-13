@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -56,6 +56,9 @@ const WorkItem = ({
 };
 
 const Work = ({ headline }) => {
+  const scroller = useRef();
+  const [isVisible, setIsVisible] = useState(false);
+
   const workData = [
     {
       headline: "Touch The Wood",
@@ -84,13 +87,20 @@ const Work = ({ headline }) => {
     },
   ];
 
-  const scroller = useRef();
+  useEffect(() => {
+    const fadeInTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1100);
+    return () => clearTimeout(fadeInTimer);
+  }, []);
 
   return (
-    <div className="flex">
+    <>
       <div
         ref={scroller}
-        className="absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black overflow-y-auto z-10"
+        className={`scrollbar-hidden absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black overflow-y-auto z-10 ${
+          isVisible ? `opacity-100` : `opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
       >
         <h1 className="text-7xl ml-10 pt-52 mb-8 header">Works</h1>
         {workData.map((item, index) => (
@@ -107,8 +117,12 @@ const Work = ({ headline }) => {
           />
         ))}
       </div>
-      <div className="absolute top-0 right-0 bg-main-pink w-8 h-full"></div>
-    </div>
+      <div
+        className={`absolute top-0 right-0 bg-main-pink w-8 h-full z-10 ${
+          isVisible ? `opacity-100` : `opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
+      ></div>
+    </>
   );
 };
 

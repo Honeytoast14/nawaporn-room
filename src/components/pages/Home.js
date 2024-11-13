@@ -1,13 +1,10 @@
-import React, { useRef, useEffect } from "react";
-import {
-  OrbitControls,
-  OrthographicCamera,
-  useAnimations,
-} from "@react-three/drei";
+import React, { useRef, useEffect, useState } from "react";
+import { OrbitControls, useAnimations } from "@react-three/drei";
 import { useFrame, useLoader, Canvas } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { Easing, Tween } from "@tweenjs/tween.js";
 import * as THREE from "three";
+import Welcome from "./Welcome";
+import SetCamera from "../Camera";
 
 import me from "../../assets/imgs/nintendoSetting.png";
 
@@ -16,7 +13,8 @@ import solar from "../../assets/videos/solar.mp4";
 import qallz from "../../assets/videos/qallz.mp4";
 import touchTheWood from "../../assets/videos/touchTheWood.mp4";
 
-function Model({ path, navName }) {
+function Model({ path, navName, setLoading, setNav }) {
+  const manager = new THREE.LoadingManager();
   const gltf = useLoader(GLTFLoader, path);
   const modelRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
@@ -24,7 +22,8 @@ function Model({ path, navName }) {
   const videoTexture = useRef(
     new THREE.VideoTexture(document.getElementById("video"))
   ).current;
-  const imgTexture = new THREE.TextureLoader().load(me);
+  const imgTexture = new THREE.TextureLoader(manager).load(me);
+
   useEffect(() => {
     if (videoTexture) {
       videoTexture.wrapS = THREE.RepeatWrapping;
@@ -54,7 +53,7 @@ function Model({ path, navName }) {
         child.receiveShadow = true;
       }
       //normal is "screen". no animation is "screen001"
-      if (child.name === "screen001") {
+      if (child.name === "screen") {
         if (navName === "Work" && videoTexture) {
           child.material = new THREE.MeshBasicMaterial({
             map: videoTexture,
@@ -65,8 +64,7 @@ function Model({ path, navName }) {
           child.material = gltf.materials["black_main"];
         }
       }
-      //normal don't have 001
-      if (child.name === "nintendoScreen001") {
+      if (child.name === "nintendoScreen") {
         if (navName === "About" && imgTexture) {
           child.material = new THREE.MeshBasicMaterial({
             map: imgTexture,
@@ -80,12 +78,21 @@ function Model({ path, navName }) {
 
     //All animations
     if (names != null) {
-      names.forEach((clip) => {
-        const action = actions[clip];
-        action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = true;
-        action.play();
-      });
+      manager.onLoad = () => {
+        setTimeout(() => {
+          setLoading(false);
+          names.forEach((clip) => {
+            const action = actions[clip];
+            action.setLoop(THREE.LoopOnce);
+            action.clampWhenFinished = true;
+            action.play();
+          });
+
+          setTimeout(() => {
+            setNav(true);
+          }, 3300);
+        }, 3200);
+      };
 
       //Phone ringing animation
       if (navName === "Contact" && actions["phoneRing"]) {
@@ -101,7 +108,16 @@ function Model({ path, navName }) {
         playWithDelay();
       }
     }
-  }, [gltf, actions, names, navName, videoTexture, imgTexture]);
+  }, [
+    gltf,
+    actions,
+    names,
+    navName,
+    videoTexture,
+    imgTexture,
+    manager,
+    setLoading,
+  ]);
 
   useEffect(() => {
     //Model follow mouse
@@ -153,109 +169,9 @@ function AnotherLight() {
   );
 }
 
-function SetCamera({ nameOfPage }) {
-  const cameraRef = useRef();
-  const zoomValue = useRef(200);
-  const positionValue = useRef([5.5, 5, 5]);
-
-  useEffect(() => {
-    if (!cameraRef.current) return;
-
-    cameraRef.current.zoom = zoomValue.current;
-    cameraRef.current.updateProjectionMatrix();
-  }, []);
-
-  const zoomTween = useRef(
-    new Tween({ current: zoomValue.current })
-      .easing(Easing.Quadratic.Out)
-      .onUpdate(({ current }) => {
-        if (cameraRef.current) {
-          cameraRef.current.zoom = current;
-          cameraRef.current.updateProjectionMatrix();
-        }
-      })
-  );
-
-  const positionTween = useRef(
-    new Tween({ current: positionValue.current })
-      .easing(Easing.Quadratic.Out)
-      .onUpdate(({ current }) => {
-        if (cameraRef.current) {
-          cameraRef.current.position.set(current[0], current[1], current[2]);
-        }
-      })
-  );
-
-  useEffect(() => {
-    if (!nameOfPage) return;
-
-    let targetZoom = zoomValue.current;
-    let targetPosition = [...positionValue.current];
-
-    if (nameOfPage === "Work") {
-      targetZoom = 1250;
-      targetPosition = [6, 5.85, 6];
-    } else if (nameOfPage === "About") {
-      targetZoom = 4500;
-      targetPosition = [6.7, 6.21, 6.12];
-    } else if (nameOfPage === "Contact") {
-      targetZoom = 1250;
-      targetPosition = [6.1, 5.35, 5.08];
-    } else if (nameOfPage === "Home") {
-      targetZoom = 200;
-      targetPosition = [5.5, 5, 5];
-    }
-
-    if (zoomTween.current.isPlaying()) {
-      zoomTween.current.stop();
-    }
-    if (positionTween.current.isPlaying()) {
-      positionTween.current.stop();
-    }
-
-    zoomTween.current = new Tween({ current: zoomValue.current })
-      .to({ current: targetZoom }, 1500)
-      .easing(Easing.Quadratic.Out)
-      .onUpdate(({ current }) => {
-        zoomValue.current = current;
-        if (cameraRef.current) {
-          cameraRef.current.zoom = current;
-          cameraRef.current.updateProjectionMatrix();
-        }
-      })
-      .start();
-
-    positionTween.current = new Tween({ current: positionValue.current })
-      .to({ current: targetPosition }, 1800)
-      .easing(Easing.Quadratic.Out)
-      .onUpdate(({ current }) => {
-        positionValue.current = current;
-        if (cameraRef.current) {
-          cameraRef.current.position.set(current[0], current[1], current[2]);
-        }
-      })
-      .start();
-  }, [nameOfPage]);
-
-  useFrame(() => {
-    zoomTween.current.update();
-    positionTween.current.update();
-  });
-
-  return (
-    <OrthographicCamera
-      makeDefault
-      ref={cameraRef}
-      position={positionValue.current}
-      zoom={zoomValue.current}
-      near={0.1}
-      far={1000}
-    />
-  );
-}
-
-export default function Home({ namePage, videoHeadline }) {
+export default function Home({ namePage, videoHeadline, setNav }) {
   let videoPath = touchTheWood;
+  const [loading, setLoading] = useState(true);
 
   if (videoHeadline === "Solar System") {
     videoPath = solar;
@@ -267,6 +183,7 @@ export default function Home({ namePage, videoHeadline }) {
 
   return (
     <>
+      {loading && <Welcome />}
       <Canvas
         shadows
         gl={{
@@ -278,7 +195,12 @@ export default function Home({ namePage, videoHeadline }) {
         <AnotherLight />
         <SunLight />
         <ambientLight color={"#ffffff"} intensity={0.9} />
-        <Model path="/models/room_no_animation.glb" navName={namePage} />
+        <Model
+          path="/models/room.glb"
+          navName={namePage}
+          setLoading={setLoading}
+          setNav={setNav}
+        />
         <mesh rotation-x={-Math.PI / 2} position={[0, -1.3, 0]} receiveShadow>
           <planeGeometry args={[100, 100]} />
           <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />

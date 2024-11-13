@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const About = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const fadeInTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1200);
+    return () => {
+      clearTimeout(fadeInTimer);
+    };
+  });
+
   return (
     <>
-      <div className="absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black z-10">
+      <div
+        className={`absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black z-10 ${
+          isVisible ? `opacity-100` : `opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
+      >
         <h1 className="text-7xl ml-10 pt-52">About me</h1>
         <div
           className="bg-main-green w-11/12 mt-8 px-12 pt-24"
