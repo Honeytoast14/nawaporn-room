@@ -33,20 +33,22 @@ const WorkItem = ({
 
   return (
     <div
-      className={`bg-main-pink w-4/5 py-32 px-12 ${
+      className={`bg-main-pink sm:w-4/5 md:w-11/12 w-full lg:py-32 py-28 px-12 ${
         isLast ? `border-none` : `border-b-8 border-main-white border-dashed`
       }`}
     >
       <div ref={itemRef} className="w-auto h-auto">
-        <h1 className="text-3xl font-bold mb-4 head">{headline}</h1>
-        <p className="text-xl">{caption}</p>
+        <h1 className="xl:text-3xl text-2xl font-bold mb-4 head">{headline}</h1>
+        <p className="xl:text-xl text-base">{caption}</p>
         {caption2 !== null ? (
-          <p className="text-xl mb-7 font-semibold text-red-500">{caption2}</p>
+          <p className="xl:text-xl text-base mb-7 font-semibold text-red-500">
+            {caption2}
+          </p>
         ) : (
           ""
         )}
         <a href={link} target="_blank" rel="noopener noreferrer">
-          <button className="bg-main-yellow h-12 w-36 text-xl rounded-xl hover-button">
+          <button className="bg-main-yellow xl:h-12 xl:w-36 xl:text-xl rounded-xl hover-button w-32 h-11 text-base ">
             {buttonText}
           </button>
         </a>
@@ -98,11 +100,11 @@ const Work = ({ headline }) => {
     <>
       <div
         ref={scroller}
-        className={`scrollbar-hidden absolute top-0 right-0 w-6/12 h-full bg-main-white text-main-black overflow-y-auto z-10 ${
-          isVisible ? `opacity-100` : `opacity-0`
+        className={`white-background ${
+          isVisible ? `lg:opacity-100` : `lg:opacity-0`
         } duration-200 ease-in-out transition-opacity`}
       >
-        <h1 className="text-7xl ml-10 pt-52 mb-8 header">Works</h1>
+        <h1 className="ml-10 pt-52 mb-8 header">Works</h1>
         {workData.map((item, index) => (
           <WorkItem
             key={index}
@@ -118,10 +120,10 @@ const Work = ({ headline }) => {
         ))}
       </div>
       <div
-        className={`absolute top-0 right-0 bg-main-pink w-8 h-full z-10 ${
-          isVisible ? `opacity-100` : `opacity-0`
+        className={`absolute top-0 right-0 bg-main-pink  xl:w-8 w-6 h-full sm:z-10 ${
+          isVisible ? `lg:opacity-100` : `lg:opacity-0`
         } duration-200 ease-in-out transition-opacity`}
-      ></div>
+      />
     </>
   );
 };

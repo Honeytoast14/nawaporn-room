@@ -117,6 +117,7 @@ function Model({ path, navName, setLoading, setNav }) {
     imgTexture,
     manager,
     setLoading,
+    setNav,
   ]);
 
   useEffect(() => {

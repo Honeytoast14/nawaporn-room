@@ -87,6 +87,26 @@ export default function SetCamera({ nameOfPage }) {
       .start();
   }, [nameOfPage]);
 
+  // useEffect(() => {
+  //   const updateCameraOnResize = () => {
+  //     if (!cameraRef.current) return;
+
+  //     const aspect = window.innerWidth / window.innerHeight;
+  //     cameraRef.current.left = -zoomValue.current * aspect;
+  //     cameraRef.current.right = zoomValue.current * aspect;
+  //     cameraRef.current.top = zoomValue.current;
+  //     cameraRef.current.bottom = -zoomValue.current;
+  //     cameraRef.current.updateProjectionMatrix();
+  //   };
+
+  //   window.addEventListener("resize", updateCameraOnResize);
+  //   updateCameraOnResize();
+
+  //   return () => {
+  //     window.removeEventListener("resize", updateCameraOnResize);
+  //   };
+  // }, []);
+
   useFrame(() => {
     zoomTween.current.update();
     positionTween.current.update();

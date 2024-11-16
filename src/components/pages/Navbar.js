@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Navbar = ({ onNavClick, activeNav, setVisible }) => {
   const navText = [
@@ -10,7 +10,7 @@ const Navbar = ({ onNavClick, activeNav, setVisible }) => {
 
   return (
     <div
-      className={`absolute top-0 right-0 z-20 text-main-black h-48 w-52 flex pl-5 transition-opacity duration-1000 ease-in-out ${
+      className={`absolute top-0 right-0 z-20 text-main-black h-48 w-52 flex pr-5 justify-end transition-opacity duration-1000 ease-in-out ${
         setVisible ? `opacity-100` : `opacity-0`
       }`}
     >
@@ -18,7 +18,7 @@ const Navbar = ({ onNavClick, activeNav, setVisible }) => {
         <div
           key={item.text}
           onClick={() => onNavClick(item.text)}
-          className={`flex flex-col w-4 mr-6 mt-6 text-base hover:text-lg hover:font-extrabold hover:duration-150 duration-150 ease-in-out cursor-pointer ${
+          className={`flex flex-col w-4 lg:mr-6 mr-4 mt-6 lg:text-base text-sm hover:text-lg hover:font-extrabold hover:duration-150 duration-150 ease-in-out cursor-pointer ${
             activeNav === item.text ? `font-extrabold` : `font-normal`
           }`}
           style={{ height: 24 * item.text.length }}
