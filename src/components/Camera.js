@@ -8,6 +8,16 @@ export default function SetCamera({ nameOfPage }) {
   const zoomValue = useRef(200);
   const positionValue = useRef([5.5, 5, 5]);
 
+  const getZoomForAbout = () => {
+    const width = window.innerWidth;
+    return width > 1440 ? 4500 : 4000;
+  };
+
+  const getPositionForAbout = () => {
+    const width = window.innerWidth;
+    return width > 1440 ? [6.7, 6.21, 6.12] : [6.6, 6.12, 6.06];
+  };
+
   useEffect(() => {
     if (!cameraRef.current) return;
 
@@ -38,7 +48,6 @@ export default function SetCamera({ nameOfPage }) {
 
   useEffect(() => {
     if (!nameOfPage) return;
-
     let targetZoom = zoomValue.current;
     let targetPosition = [...positionValue.current];
 
@@ -46,8 +55,8 @@ export default function SetCamera({ nameOfPage }) {
       targetZoom = 1250;
       targetPosition = [6, 5.85, 6];
     } else if (nameOfPage === "About") {
-      targetZoom = 4500;
-      targetPosition = [6.7, 6.21, 6.12];
+      targetZoom = getZoomForAbout();
+      targetPosition = getPositionForAbout();
     } else if (nameOfPage === "Contact") {
       targetZoom = 1250;
       targetPosition = [6.1, 5.35, 5.08];
@@ -61,6 +70,11 @@ export default function SetCamera({ nameOfPage }) {
     }
     if (positionTween.current.isPlaying()) {
       positionTween.current.stop();
+    }
+
+    if (window.innerWidth < 1024) {
+      targetZoom = 200;
+      targetPosition = [5.5, 5, 5];
     }
 
     zoomTween.current = new Tween({ current: zoomValue.current })
@@ -87,25 +101,44 @@ export default function SetCamera({ nameOfPage }) {
       .start();
   }, [nameOfPage]);
 
-  // useEffect(() => {
-  //   const updateCameraOnResize = () => {
-  //     if (!cameraRef.current) return;
+  useEffect(() => {
+    if (window.innerWidth > 1024) {
+      const handleResize = () => {
+        if (zoomTween.current.isPlaying()) zoomTween.current.stop();
+        if (positionTween.current.isPlaying()) positionTween.current.stop();
 
-  //     const aspect = window.innerWidth / window.innerHeight;
-  //     cameraRef.current.left = -zoomValue.current * aspect;
-  //     cameraRef.current.right = zoomValue.current * aspect;
-  //     cameraRef.current.top = zoomValue.current;
-  //     cameraRef.current.bottom = -zoomValue.current;
-  //     cameraRef.current.updateProjectionMatrix();
-  //   };
+        zoomTween.current = new Tween({ current: zoomValue.current })
+          .to({ current: 200 }, 1500)
+          .easing(Easing.Quadratic.Out)
+          .onUpdate(({ current }) => {
+            zoomValue.current = current;
+            if (cameraRef.current) {
+              cameraRef.current.zoom = current;
+              cameraRef.current.updateProjectionMatrix();
+            }
+          })
+          .start();
 
-  //   window.addEventListener("resize", updateCameraOnResize);
-  //   updateCameraOnResize();
+        positionTween.current = new Tween({ current: positionValue.current })
+          .to({ current: [5.5, 5, 5] }, 1800)
+          .easing(Easing.Quadratic.Out)
+          .onUpdate(({ current }) => {
+            positionValue.current = current;
+            if (cameraRef.current) {
+              cameraRef.current.position.set(
+                current[0],
+                current[1],
+                current[2]
+              );
+            }
+          })
+          .start();
+      };
 
-  //   return () => {
-  //     window.removeEventListener("resize", updateCameraOnResize);
-  //   };
-  // }, []);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   useFrame(() => {
     zoomTween.current.update();

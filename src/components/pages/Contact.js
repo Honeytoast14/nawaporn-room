@@ -25,7 +25,7 @@ const Input = ({ label, type, name, placeholder, pattern }) => {
   } = useFormContext();
 
   return (
-    <div className="mb-4 2xl:mb-8">
+    <div className="mb-4 3xl:mb-8">
       <div className="flex justify-between">
         <label className="label-style">
           {label} <span className="text-red-600">*</span>
@@ -160,67 +160,69 @@ export default function Contact() {
     <>
       {showPopUp && <PopUp closedPopUp={() => setShowPopUp(false)} />}
       <div
-        className={`white-background-left ${
+        className={`white-background-left overflow-y-auto flex flex-col gap-8 ${
           isVisible ? `lg:opacity-100` : `lg:opacity-0`
         } duration-200 ease-in-out transition-opacity`}
       >
-        <div className="flex flex-col gap-8 h-full">
-          <h1 className="sm:ml-28 ml-10 pt-52 z-30">Contact</h1>
-          <div className="flex justify-end h-full">
-            <div className="bg-main-yellow sm:w-11/12 w-full px-11 sm:pt-12 pt-10 pb-8 flex sm:flex-row flex-col">
-              <FormProvider {...methods}>
-                <form
-                  ref={form}
-                  className="sm:w-4/6 w-full"
-                  noValidate
-                  onSubmit={methods.handleSubmit(sendEmail)}
-                >
-                  <Input {...name_validation} />
-                  <Input {...email_validation} />
-                  <Textarea name={"message"} placeholder={"Message..."} />
-                  <div className="flex justify-center items-center">
-                    <input
-                      className="uppercase bg-main-pink border-solid rounded-xl size w-28 h-12 hover-button mt-6 cursor-pointer"
-                      type="submit"
-                      value="Send"
-                    />
-                  </div>
-                </form>
-              </FormProvider>
+        <h1 className="sm:ml-28 ml-10 pt-52 z-30">Contact</h1>
+        <div className="h-full bg-main-yellow sm:w-11/12 w-full ml-auto">
+          <div className="bg-main-yellow flex sm:flex-row flex-col">
+            <FormProvider {...methods}>
+              <form
+                ref={form}
+                className="sm:w-4/6 w-full px-11 sm:pt-12 pt-10 pb-8"
+                noValidate
+                onSubmit={methods.handleSubmit(sendEmail)}
+              >
+                <Input {...name_validation} />
+                <Input {...email_validation} />
+                <Textarea name={"message"} placeholder={"Message..."} />
+                <div className="flex justify-center items-center">
+                  <input
+                    className="uppercase bg-main-pink border-solid rounded-xl size w-28 h-12 hover-button mt-6 cursor-pointer"
+                    type="submit"
+                    value="Send"
+                  />
+                </div>
+              </form>
+            </FormProvider>
 
-              <div className="flex sm:flex-col flex-row sm:gap-0 gap-6 2xl:gap-2 sm:justify-start justify-center sm:ml-10 pt-8 gap-y-7">
-                <a
-                  href="https://linkedin.com/in/nawaporn-sriprathet"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FontAwesomeIcon
-                    icon={faLinkedin}
-                    className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
-                  />
-                </a>
-                <a
-                  href="https://github.com/Honeytoast14"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FontAwesomeIcon
-                    icon={faGithub}
-                    className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
-                  />
-                </a>
-                <Mailto subject="Hello & Welcome">
-                  <FontAwesomeIcon
-                    icon={faEnvelope}
-                    className="size-10 hover:scale-125 duration-100 hover:duration-150 ease-in-out"
-                  />
-                </Mailto>
-              </div>
+            <div className="flex sm:flex-col flex-row sm:gap-0 gap-6 2xl:gap-2 sm:justify-start justify-center sm:pt-20 pt-10  gap-y-7">
+              <a
+                href="https://linkedin.com/in/nawaporn-sriprathet"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FontAwesomeIcon
+                  icon={faLinkedin}
+                  className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
+                />
+              </a>
+              <a
+                href="https://github.com/Honeytoast14"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FontAwesomeIcon
+                  icon={faGithub}
+                  className="size-10  hover:scale-125 duration-100 hover:duration-150 ease-in-out"
+                />
+              </a>
+              <Mailto subject="Hello & Welcome">
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className="size-10 hover:scale-125 duration-100 hover:duration-150 ease-in-out"
+                />
+              </Mailto>
             </div>
           </div>
         </div>
-        <div className="absolute top-0 left-0 bg-main-yellow xl:w-8 w-6 h-full sm:opacity-100 opacity-0"></div>
       </div>
+      <div
+        className={`absolute top-0 left-0 bg-main-yellow  xl:w-8 w-6 h-full sm:z-10 ${
+          isVisible ? `lg:opacity-100` : `lg:opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
+      />
     </>
   );
 }

@@ -100,7 +100,7 @@ const Work = ({ headline }) => {
     <>
       <div
         ref={scroller}
-        className={`white-background ${
+        className={`white-background overflow-y-auto ${
           isVisible ? `lg:opacity-100` : `lg:opacity-0`
         } duration-200 ease-in-out transition-opacity`}
       >

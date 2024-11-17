@@ -14,13 +14,14 @@ const About = () => {
   return (
     <>
       <div
-        className={`white-background gap-4 ${
+        className={`white-background overflow-y-auto ${
           isVisible ? `lg:opacity-100` : `lg:opacity-0`
-        } duration-200 ease-in-out transition-opacity flex flex-col`}
+        } duration-200 ease-in-out transition-opacity flex flex-col gap-8`}
       >
         <h1 className=" ml-10 pt-52">About me</h1>
-        <div className="bg-main-green md:w-11/12 w-full h-dvh px-12 pt-24 pb-16">
-          <p className=" xl:text-2xl text-lg">
+
+        <div className="bg-main-green md:w-11/12 sm:w-11/12 w-full h-full">
+          <p className="xl:text-2xl text-lg px-12 pt-24 pb-16 bg-main-green">
             Hello, my name is Nawaporn Sriprathet, a Front-end Web Developer
             skilled in React and Tailwind CSS. As a recent university graduate,
             I’m stepping seriously into the web development field, focusing on
@@ -33,8 +34,12 @@ const About = () => {
             music, which keep me energized and inspired. &#128523;
           </p>
         </div>
-        <div className="absolute top-0 right-0 bg-main-green xl:w-8 w-6 h-full sm:opacity-100 opacity-0" />
       </div>
+      <div
+        className={`absolute top-0 right-0 bg-main-green  xl:w-8 w-6 h-full sm:z-10 ${
+          isVisible ? `lg:opacity-100` : `lg:opacity-0`
+        } duration-200 ease-in-out transition-opacity`}
+      />
     </>
   );
 };
