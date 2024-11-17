@@ -94,7 +94,7 @@ const Textarea = ({ name, placeholder }) => {
 
 const PopUp = ({ closedPopUp }) => {
   return (
-    <div className="w-full h-full bg-black bg-opacity-40 absolute top-0 z-10 flex items-center justify-center ">
+    <div className="w-full h-full bg-black bg-opacity-40 absolute top-0 z-40 flex items-center justify-center ">
       <div className="bg-main-white w-2/6 h-2/5 rounded-3xl relative">
         <FontAwesomeIcon
           icon={faXmark}
@@ -121,23 +121,21 @@ export default function Contact() {
   const form = useRef();
   const methods = useForm();
   var [showPopUp, setShowPopUp] = useState(false);
-
+  const serviceId = process.env.REACT_APP_SERVICE_ID;
+  const templateId = process.env.REACT_APP_TEMPLATE_ID;
+  const pbKey = process.env.REACT_APP_PUBLIC_KEY;
   const sendEmail = (data, e) => {
-    // console.log(data);
     e.preventDefault();
 
     emailjs
-      .sendForm("service_h9wrhar", "template_i29fera", form.current, {
-        publicKey: "6-u1hdQTB2cI-gTxw",
+      .sendForm(serviceId, templateId, form.current, {
+        publicKey: pbKey,
       })
       .then(
         () => {
-          // console.log("SUCCESS!");
           setShowPopUp(true);
         },
-        (error) => {
-          // console.log("FAILED...", error.text);
-        }
+        (error) => {}
       );
   };
 
@@ -164,7 +162,7 @@ export default function Contact() {
           isVisible ? `lg:opacity-100` : `lg:opacity-0`
         } duration-200 ease-in-out transition-opacity`}
       >
-        <h1 className="sm:ml-28 ml-10 pt-52 z-30">Contact</h1>
+        <h1 className="sm:ml-28 ml-10 pt-48 z-30">Contact</h1>
         <div className="h-full bg-main-yellow sm:w-11/12 w-full ml-auto">
           <div className="bg-main-yellow flex sm:flex-row flex-col">
             <FormProvider {...methods}>
