@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useAnimations } from "@react-three/drei";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -6,15 +6,18 @@ import * as THREE from "three";
 
 import me from "../assets/imgs/nintendoSetting.png";
 
-export default function Model({ path, navName, setLoading, setNav }) {
+export default function Model({ path, navName, setLoading, setNav, videoRef }) {
   const manager = new THREE.LoadingManager();
   const gltf = useLoader(GLTFLoader, path);
   const modelRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
   const { actions, names } = useAnimations(gltf.animations, modelRef);
-  const videoTexture = useRef(
-    new THREE.VideoTexture(document.getElementById("video"))
-  ).current;
+  const videoTexture = useMemo(() => {
+    if (videoRef.current) {
+      return new THREE.VideoTexture(videoRef.current);
+    }
+    return null;
+  }, [videoRef]);
   const imgTexture = new THREE.TextureLoader(manager).load(me);
 
   const setModelScale = () => {

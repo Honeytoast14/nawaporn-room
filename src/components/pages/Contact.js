@@ -95,14 +95,16 @@ const Textarea = ({ name, placeholder }) => {
 const PopUp = ({ closedPopUp }) => {
   return (
     <div className="w-full h-full bg-black bg-opacity-40 absolute top-0 z-40 flex items-center justify-center ">
-      <div className="bg-main-white w-2/6 h-2/5 rounded-3xl relative">
+      <div className="bg-main-white w-5/6 sm:w-4/6 md:w-2/6 h-2/5 rounded-3xl relative">
         <FontAwesomeIcon
           icon={faXmark}
-          className="absolute right-0 top-0 mr-4 mt-4 size-9 hover:cursor-pointer"
+          className="absolute right-0 top-0 mr-4 mt-4 md:size-9 size-6 hover:cursor-pointer"
           onClick={closedPopUp}
         />
         <div className="flex flex-col items-center justify-center w-full h-full ">
-          <p className="text-3xl">The email has been sent&#128077;</p>
+          <p className="text-xl md:text-3xl">
+            The email has been sent&#128077;
+          </p>
         </div>
       </div>
     </div>

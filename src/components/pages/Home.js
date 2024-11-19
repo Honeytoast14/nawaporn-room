@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import Welcome from "./Welcome";
@@ -47,13 +47,17 @@ export default function Home({ namePage, videoHeadline, setNav }) {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const videoRef = useRef(null);
 
   if (videoHeadline === "Solar System") {
     videoPath = solar;
+    console.log(videoPath);
   } else if (videoHeadline === "Learn2Safe") {
     videoPath = learn2safe;
+    console.log(videoPath);
   } else if (videoHeadline === "QALLZ") {
     videoPath = qallz;
+    console.log(videoPath);
   }
 
   useEffect(() => {
@@ -108,6 +112,7 @@ export default function Home({ namePage, videoHeadline, setNav }) {
           navName={namePage}
           setLoading={setLoading}
           setNav={setNav}
+          videoRef={videoRef}
         />
         <mesh
           rotation-x={-Math.PI / 2}
@@ -121,12 +126,12 @@ export default function Home({ namePage, videoHeadline, setNav }) {
         <SetCamera nameOfPage={namePage} />
       </Canvas>
       <video
+        ref={videoRef}
         src={videoPath}
         autoPlay
         loop
         muted
-        className="w-0 h-0 absolute top-0 z-0"
-        id="video"
+        className="absolute top-0 z-0"
       />
     </>
   );

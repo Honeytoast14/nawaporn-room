@@ -33,7 +33,7 @@ const WorkItem = ({
 
   return (
     <div
-      className={`bg-main-pink sm:w-4/5 md:w-11/12 w-full lg:py-32 py-28 px-12 ${
+      className={`bg-main-pink sm:w-4/5 md:pink-bg w-full lg:py-32 py-28 px-12 ${
         isLast ? `border-none` : `border-b-8 border-main-white border-dashed`
       }`}
     >

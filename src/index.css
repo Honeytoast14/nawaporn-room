@@ -29,8 +29,12 @@ h1 {
 }
 
 .white-background {
-  @apply absolute top-0 right-0 w-full lg:w-6/12 h-full bg-main-white text-main-black z-10 scrollbar-hidden;
+  @apply absolute top-0 right-0 w-full lg:w-6/12 h-full bg-main-white text-main-black z-10;
 }
 .white-background-left {
-  @apply absolute top-0 left-0 w-full lg:w-6/12 h-full bg-main-white text-main-black z-10 scrollbar-hidden;
+  @apply absolute top-0 left-0 w-full lg:w-6/12 h-full bg-main-white text-main-black z-10;
+}
+
+.pink-bg{
+  width: 80%;
 }
