@@ -26,8 +26,8 @@ const WorkItem = ({
         trigger: itemRef.current,
         start: 'top 65%',
         end: '120% 50%',
-        markers: false,
-        onEnter: () => onEnterHeadline(headline),
+        markers: true,
+        onEnter: () => {onEnterHeadline(headline); alert(headline)},
         onEnterBack: () => onEnterHeadline(headline),
       },
     });
