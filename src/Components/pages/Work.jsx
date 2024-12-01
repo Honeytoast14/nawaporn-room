@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP,ScrollTrigger);
 
 const WorkItem = ({
   headline,
@@ -27,7 +27,7 @@ const WorkItem = ({
         start: 'top 65%',
         end: '120% 50%',
         markers: true,
-        onEnter: () => {onEnterHeadline(headline); alert(headline)},
+        onEnter: () => {onEnterHeadline(headline)},
         onEnterBack: () => onEnterHeadline(headline),
       },
     });

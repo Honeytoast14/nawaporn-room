@@ -21,7 +21,7 @@ const Room = ({ selectedPage, headline }) => {
       case 'Touch The Wood':
         return './assets/videos/touchTheWood.mp4';
       case 'Solar System':
-        return './assets/videos/learn2safe.mp4';
+        return './assets/videos/solar.mp4';
       case 'Learn2Safe':
         return './assets/videos/learn2safe.mp4';
       case 'QALLZ':
