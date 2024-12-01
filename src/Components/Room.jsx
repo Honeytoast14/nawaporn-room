@@ -7,8 +7,6 @@ import { useProgress, useVideoTexture } from '@react-three/drei';
 import { useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 
-import nintendoPic from '../assets/imgs/nintendoSetting.png';
-
 const Room = ({ selectedPage, headline }) => {
   const roomRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
@@ -21,19 +19,19 @@ const Room = ({ selectedPage, headline }) => {
   const url = useMemo(() => {
     switch (headline) {
       case 'Touch The Wood':
-        return '/src/assets/videos/touchTheWood.mp4';
+        return './assets/videos/touchTheWood.mp4';
       case 'Solar System':
-        return '/src/assets/videos/solar.mp4';
+        return './assets/videos/learn2safe.mp4';
       case 'Learn2Safe':
-        return '/src/assets/videos/learn2safe.mp4';
+        return './assets/videos/learn2safe.mp4';
       case 'QALLZ':
-        return '/src/assets/videos/qallz.mp4';
+        return './assets/videos/qallz.mp4';
       default:
         return console.error('no vid');
     }
   }, [headline]);
 
-  const imgTexture = useLoader(THREE.TextureLoader, nintendoPic);
+  const imgTexture = useLoader(THREE.TextureLoader, './assets/img/nintendoSetting.png');
   const vidTexture = useVideoTexture(url);
 
   const setModelScale = () => {
