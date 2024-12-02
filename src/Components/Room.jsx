@@ -101,16 +101,18 @@ const Room = ({ selectedPage, headline }) => {
         }
       }
 
-      if (child.name === "screen") {
-        if (selectedPage === "Work" && vidTexture) {
-          child.material = new THREE.MeshBasicMaterial({
-            map: vidTexture,
-            toneMapped: false,
-          });
-        } else {
-          child.material = gltf.materials["black_main"];
-        }
-      }
+      // if (child.name === "screen") {
+      //   if (selectedPage === "Work") {
+      //     if(vidTexture){
+      //       child.material = new THREE.MeshBasicMaterial({
+      //         map: vidTexture,
+      //         toneMapped: false,
+      //       });
+      //     }
+      //   } else {
+      //     child.material = gltf.materials["black_main"];
+      //   }
+      // }
 
       if (child.isMesh) {
         child.castShadow = true;
