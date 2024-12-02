@@ -1,20 +1,20 @@
-import './App.css';
-import '@fontsource/dm-sans';
+import "./App.css";
+import "@fontsource/dm-sans";
 
-import * as THREE from 'three';
-import { Canvas } from '@react-three/fiber';
-import { Suspense, useState } from 'react';
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useState } from "react";
 
-import Experience from './Components/Experience';
-import LoadingScreen from './Components/LoadingScreen';
-import Navbar from './Components/Navbar';
-import About from './Components/pages/About';
-import Contact from './Components/pages/Contact';
-import Work from './Components/pages/Work';
+import Experience from "./Components/Experience";
+import LoadingScreen from "./Components/LoadingScreen";
+import Navbar from "./Components/Navbar";
+import About from "./Components/pages/About";
+import Contact from "./Components/pages/Contact";
+import Work from "./Components/pages/Work";
 
 export default function App() {
-  const [select, setSelect] = useState('Home');
-  const [headline, setHeadline] = useState('Touch The Wood');
+  const [select, setSelect] = useState("Home");
+  const [headline, setHeadline] = useState("Touch The Wood");
 
   return (
     <div className="App w-shv h-svh">
@@ -31,9 +31,9 @@ export default function App() {
         </Suspense>
       </Canvas>
       <Navbar onSelected={setSelect} selectedPage={select} />
-      {select === 'About' && <About />}
-      {select === 'Contact' && <Contact />}
-      {select === 'Work' && <Work setHeadline={setHeadline} />}
+      {select === "About" && <About />}
+      {select === "Contact" && <Contact />}
+      {select === "Work" && <Work setHeadline={setHeadline} />}
     </div>
   );
 }

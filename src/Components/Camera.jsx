@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { OrbitControls, OrthographicCamera } from '@react-three/drei';
-import { useRef, useEffect, useCallback } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Easing, Tween } from '@tweenjs/tween.js';
+import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import { useRef, useEffect, useCallback } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Easing, Tween } from "@tweenjs/tween.js";
 
 export default function Camera({ selectedPage }) {
   const cameraRef = useRef();
@@ -27,16 +27,16 @@ export default function Camera({ selectedPage }) {
     let targetPosition = [...positionValue.current];
 
     if (window.innerWidth >= 1024) {
-      if (selectedPage === 'Work') {
+      if (selectedPage === "Work") {
         targetZoom = 1250;
         targetPosition = [6, 5.87, 6.07];
-      } else if (selectedPage === 'About') {
+      } else if (selectedPage === "About") {
         targetZoom = getZoomForAbout();
         targetPosition = getPositionForAbout();
-      } else if (selectedPage === 'Contact') {
+      } else if (selectedPage === "Contact") {
         targetZoom = 1250;
         targetPosition = [6.1, 5.35, 5.08];
-      } else if (selectedPage === 'Home') {
+      } else if (selectedPage === "Home") {
         targetZoom = 200;
         targetPosition = [5.5, 5, 5];
       }
@@ -85,10 +85,10 @@ export default function Camera({ selectedPage }) {
 
     updateCameraForPage();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [selectedPage, updateCameraForPage]);
 

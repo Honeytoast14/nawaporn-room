@@ -2,15 +2,15 @@
 
 /* eslint-disable react/prop-types */
 
-import { useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import emailjs from '@emailjs/browser';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import emailjs from "@emailjs/browser";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
-const Mailto = ({ subject, body = '', children }) => {
+const Mailto = ({ subject, body = "", children }) => {
   return (
     <a
       href={`mailto:nawaporn.navis@gmail.com?subject=${
@@ -135,17 +135,17 @@ export default function Contact() {
   };
 
   const name_validation = {
-    label: 'Your Name',
-    type: 'text',
-    name: 'user_name',
-    placeholder: 'Name...',
+    label: "Your Name",
+    type: "text",
+    name: "user_name",
+    placeholder: "Name...",
   };
 
   const email_validation = {
-    label: 'Your Email',
-    type: 'email',
-    name: 'user_email',
-    placeholder: 'Email...',
+    label: "Your Email",
+    type: "email",
+    name: "user_email",
+    placeholder: "Email...",
     pattern:
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   };
@@ -169,7 +169,7 @@ export default function Contact() {
               >
                 <Input {...name_validation} />
                 <Input {...email_validation} />
-                <Textarea name={'message'} placeholder={'Message...'} />
+                <Textarea name={"message"} placeholder={"Message..."} />
                 <div className="flex items-center justify-center">
                   <input
                     className="size hover-button mt-6 h-12 w-28 cursor-pointer rounded-xl border-solid bg-main-pink uppercase"

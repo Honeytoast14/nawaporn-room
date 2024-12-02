@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useMemo, useRef } from 'react';
-import { useLoader, useFrame } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { useProgress, useVideoTexture } from '@react-three/drei';
-import { useAnimations } from '@react-three/drei';
-import * as THREE from 'three';
+import { useEffect, useMemo, useRef } from "react";
+import { useLoader, useFrame } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useProgress, useVideoTexture } from "@react-three/drei";
+import { useAnimations } from "@react-three/drei";
+import * as THREE from "three";
 
 const Room = ({ selectedPage, headline }) => {
   const roomRef = useRef();
@@ -13,25 +13,28 @@ const Room = ({ selectedPage, headline }) => {
   const { progress } = useProgress();
   const width = window.innerWidth;
 
-  const gltf = useLoader(GLTFLoader, './model/room.glb');
+  const gltf = useLoader(GLTFLoader, "./model/room.glb");
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
   const url = useMemo(() => {
     switch (headline) {
-      case 'Touch The Wood':
-        return './assets/videos/touchTheWood.mp4';
-      case 'Solar System':
-        return './assets/videos/solar.mp4';
-      case 'Learn2Safe':
-        return './assets/videos/learn2safe.mp4';
-      case 'QALLZ':
-        return './assets/videos/qallz.mp4';
+      case "Touch The Wood":
+        return "./assets/videos/touchTheWood.mp4";
+      case "Solar System":
+        return "./assets/videos/solar.mp4";
+      case "Learn2Safe":
+        return "./assets/videos/learn2safe.mp4";
+      case "QALLZ":
+        return "./assets/videos/qallz.mp4";
       default:
-        return console.error('no vid');
+        return console.error("no vid");
     }
   }, [headline]);
 
-  const imgTexture = useLoader(THREE.TextureLoader, './assets/img/nintendoSetting.png');
+  const imgTexture = useLoader(
+    THREE.TextureLoader,
+    "./assets/img/nintendoSetting.png",
+  );
   const vidTexture = useVideoTexture(url);
 
   const setModelScale = () => {
@@ -61,8 +64,8 @@ const Room = ({ selectedPage, headline }) => {
       setModelScale();
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -84,28 +87,28 @@ const Room = ({ selectedPage, headline }) => {
   }, [vidTexture]);
 
   useEffect(() => {
-    gltf.scene.traverse(child => {
-      if (child.name === 'nintendoScreen') {
-        if (selectedPage === 'About' && imgTexture) {
+    gltf.scene.traverse((child) => {
+      if (child.name === "nintendoScreen") {
+        if (selectedPage === "About" && imgTexture) {
           child.material = new THREE.MeshBasicMaterial({
             map: imgTexture,
             toneMapped: false,
           });
         } else {
           {
-            child.material = gltf.materials['black_main'];
+            child.material = gltf.materials["black_main"];
           }
         }
       }
 
-      if (child.name === 'screen') {
-        if (selectedPage === 'Work' && vidTexture) {
+      if (child.name === "screen") {
+        if (selectedPage === "Work" && vidTexture) {
           child.material = new THREE.MeshBasicMaterial({
             map: vidTexture,
             toneMapped: false,
           });
         } else {
-          child.material = gltf.materials['black_main'];
+          child.material = gltf.materials["black_main"];
         }
       }
 
@@ -126,8 +129,8 @@ const Room = ({ selectedPage, headline }) => {
 
   //animation
   useEffect(() => {
-    if (selectedPage === 'Contact' && actions['phoneRing']) {
-      const action = actions['phoneRing'];
+    if (selectedPage === "Contact" && actions["phoneRing"]) {
+      const action = actions["phoneRing"];
       action.loop = THREE.LoopOnce;
       const playAnim = setInterval(() => {
         action.reset().play();
@@ -143,7 +146,7 @@ const Room = ({ selectedPage, headline }) => {
     if (names != null) {
       if (progress === 100) {
         const timeout = setTimeout(() => {
-          names.forEach(clip => {
+          names.forEach((clip) => {
             const action = actions[clip];
             action.setLoop(THREE.LoopOnce);
             action.clampWhenFinished = true;
@@ -156,14 +159,14 @@ const Room = ({ selectedPage, headline }) => {
   }, [actions, names, progress, selectedPage]);
 
   useEffect(() => {
-    const handleMouseMove = event => {
+    const handleMouseMove = (event) => {
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
       mousePos.current = { x, y };
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   });
 
   useFrame(() => {

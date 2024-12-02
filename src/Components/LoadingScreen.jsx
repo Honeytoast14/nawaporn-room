@@ -1,5 +1,5 @@
-import { useProgress } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useProgress } from "@react-three/drei";
+import { useEffect, useState } from "react";
 
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);

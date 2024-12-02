@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import { useProgress } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useProgress } from "@react-three/drei";
+import { useEffect, useState } from "react";
 
 const NavButton = ({ text, onClick, selected }) => {
   return (
@@ -39,23 +39,23 @@ export default function Navbar({ onSelected, selectedPage }) {
       className={`absolute top-0 z-20 mt-5 flex w-full justify-between px-5 text-main-black ${visible ? `visible opacity-100` : `invisible opacity-0`} transition-opacity duration-1000 ease-in-out sm:right-0 sm:mt-0 sm:w-auto sm:pr-5`}
     >
       <NavButton
-        text={'Home'}
-        onClick={() => onSelected('Home')}
+        text={"Home"}
+        onClick={() => onSelected("Home")}
         selected={selectedPage}
       />
       <NavButton
-        text={'Work'}
-        onClick={() => onSelected('Work')}
+        text={"Work"}
+        onClick={() => onSelected("Work")}
         selected={selectedPage}
       />
       <NavButton
-        text={'About'}
-        onClick={() => onSelected('About')}
+        text={"About"}
+        onClick={() => onSelected("About")}
         selected={selectedPage}
       />
       <NavButton
-        text={'Contact'}
-        onClick={() => onSelected('Contact')}
+        text={"Contact"}
+        onClick={() => onSelected("Contact")}
         selected={selectedPage}
       />
     </div>

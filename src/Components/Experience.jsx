@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unknown-property */
-import { useRef, useEffect, useState } from 'react';
-import * as THREE from 'three';
-import Room from './Room';
-import Camera from './Camera';
+import { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import Room from "./Room";
+import Camera from "./Camera";
 // import { useProgress } from '@react-three/drei';
 
 function SunLight() {
@@ -27,8 +27,8 @@ function AnotherLight() {
     <hemisphereLight
       ref={lightRef}
       position={[0, 5, 0]}
-      color={'#fff4c7'}
-      groundColor={new THREE.Color('#ff77af')}
+      color={"#fff4c7"}
+      groundColor={new THREE.Color("#ff77af")}
       intensity={0.6}
     />
   );
@@ -49,10 +49,10 @@ export default function Experience({ selectedPage, headline }) {
       });
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -77,7 +77,7 @@ export default function Experience({ selectedPage, headline }) {
     <>
       <AnotherLight />
       <SunLight />
-      <ambientLight color={'#ffffff'} intensity={0.8} />
+      <ambientLight color={"#ffffff"} intensity={0.8} />
       <Room selectedPage={selectedPage} headline={headline} />
       <Camera selectedPage={selectedPage} />
       <mesh
@@ -86,7 +86,7 @@ export default function Experience({ selectedPage, headline }) {
         receiveShadow
       >
         <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color={'#ffba9a'} emissive={'#b1b1b1'} />
+        <meshStandardMaterial color={"#ffba9a"} emissive={"#b1b1b1"} />
       </mesh>
     </>
   );
