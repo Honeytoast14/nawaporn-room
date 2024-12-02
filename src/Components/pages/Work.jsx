@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -16,23 +16,21 @@ const WorkItem = ({
   onEnterHeadline,
 }) => {
   const itemRef = useRef();
-  useGSAP(() => {
+  useEffect(() => {
     if (itemRef.current && scroller.current) {
-      gsap.to(itemRef.current, {
-        scrollTrigger: {
-          scroller: scroller.current,
-          trigger: itemRef.current,
-          start: "top 65%",
-          end: "120% 50%",
-          markers: true,
-          onEnter: () => {
-            onEnterHeadline(headline);
-          },
-          onEnterBack: () => onEnterHeadline(headline),
-        },
+      ScrollTrigger.create({
+        scroller: scroller.current,
+        trigger: itemRef.current,
+        start: "top 65%",
+        end: "120% 50%",
+        markers: false,
+        onEnter: () => onEnterHeadline(headline),
+        onEnterBack: () => onEnterHeadline(headline),
       });
     }
-  });
+
+    return () => ScrollTrigger.refresh();
+  }, [scroller, onEnterHeadline, headline]);
 
   return (
     <div
