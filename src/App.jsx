@@ -26,7 +26,7 @@ export default function App() {
           toneMappingExposure: 1.4,
         }}
       >
-        <Suspense>
+        <Suspense fallback={null}>
           <Experience selectedPage={select} headline={headline} />
         </Suspense>
       </Canvas>

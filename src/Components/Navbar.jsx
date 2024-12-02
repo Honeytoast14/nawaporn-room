@@ -11,7 +11,7 @@ const NavButton = ({ text, onClick, selected }) => {
         className={`cursor-pointer text-center text-sm duration-150 ease-in-out xl:text-base ${
           selected === text
             ? `text-lg font-bold`
-            : `font-normal hover:text-lg hover:font-extrabold hover:duration-150`
+            : `2xl:font-normal 2xl:hover:text-lg 2xl:hover:font-extrabold 2xl:hover:duration-150`
         }`}
       >
         {text}
