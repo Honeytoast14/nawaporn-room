@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -20,17 +19,20 @@ const WorkItem = ({
   const itemRef = React.useRef();
 
   useGSAP(() => {
-    gsap.to(itemRef.current, {
-      scrollTrigger: {
-        scroller: scroller.current,
-        trigger: itemRef.current,
-        start: 'top 65%',
-        end: '120% 50%',
-        markers: true,
-        onEnter: () => {onEnterHeadline(headline)},
-        onEnterBack: () => onEnterHeadline(headline),
-      },
-    });
+    if(itemRef.current && scroller.current){
+      console.log(scroller.current)
+      gsap.to(itemRef.current, {
+        scrollTrigger: {
+          scroller: scroller.current,
+          trigger: itemRef.current,
+          start: 'top 65%',
+          end: '120% 50%',
+          markers: true,
+          onEnter: () => {onEnterHeadline(headline)},
+          onEnterBack: () => onEnterHeadline(headline),
+        },
+      });
+    }
   });
 
   return (
@@ -39,7 +41,7 @@ const WorkItem = ({
         isLast ? `border-none` : `border-b-8 border-dashed border-main-white`
       }`}
     >
-      <div ref={itemRef} className="h-auto w-auto">
+      <div ref={itemRef} className="h-auto w-auto scroller">
         <h1 className="head mb-4 text-2xl font-bold">{headline}</h1>
         <p className="text-lg xl:text-xl">{caption}</p>
         {caption2 !== null ? (
