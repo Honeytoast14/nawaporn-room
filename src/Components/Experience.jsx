@@ -4,8 +4,6 @@ import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import Room from "./Room";
 import Camera from "./Camera";
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-// import { useProgress } from '@react-three/drei';
 
 function SunLight() {
   const lightRef = useRef();
