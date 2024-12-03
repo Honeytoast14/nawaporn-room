@@ -10,34 +10,33 @@ import * as THREE from "three";
 const Room = ({ selectedPage, headline }) => {
   const roomRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
-  const { progress, loaded, item } = useProgress();
-  const width = window.innerWidth;
+  const { progress} = useProgress();
 
   const gltf = useLoader(GLTFLoader, "/model/room.glb");
   
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
-  // const url = useMemo(() => {
-  //   switch (headline) {
-  //     case "Touch The Wood":
-  //       return "./assets/videos/touchTheWood.mp4";
-  //     case "Solar System":
-  //       return "./assets/videos/solar.mp4";
-  //     case "Learn2Safe":
-  //       return "./assets/videos/learn2safe.mp4";
-  //     case "QALLZ":
-  //       return "./assets/videos/qallz.mp4";
-  //     default:
-  //       return console.error("no vid");
-  //   }
-  // }, [headline]);
+  const url = useMemo(() => {
+    switch (headline) {
+      case "Touch The Wood":
+        return "./assets/videos/touchTheWood.mp4";
+      case "Solar System":
+        return "./assets/videos/solar.mp4";
+      case "Learn2Safe":
+        return "./assets/videos/learn2safe.mp4";
+      case "QALLZ":
+        return "./assets/videos/qallz.mp4";
+      default:
+        return console.error("no vid");
+    }
+  }, [headline]);
 
   const imgTexture = useLoader(
     THREE.TextureLoader,
     "./assets/img/nintendoSetting.png",
   );
 
-  // const vidTexture = useVideoTexture(url);  
+  const vidTexture = useVideoTexture(url);  
 
   const setModelScale = () => {
     if (roomRef.current) {
@@ -78,18 +77,19 @@ const Room = ({ selectedPage, headline }) => {
     imgTexture.flipY = false;
   }, [imgTexture]);
 
-  // useEffect(() => {
-  //   vidTexture.wrapS = THREE.RepeatWrapping;
-  //   vidTexture.wrapT = THREE.RepeatWrapping;
-  //   vidTexture.rotation = -Math.PI / 2;
-  //   vidTexture.repeat.set(-4.12, 4.11);
-  //   vidTexture.offset.set(-0.045, 0.449);
-  //   vidTexture.colorSpace = THREE.SRGBColorSpace;
-  //   vidTexture.needsUpdate = true;
-  // }, [vidTexture]);
+  useEffect(() => {
+    vidTexture.wrapS = THREE.RepeatWrapping;
+    vidTexture.wrapT = THREE.RepeatWrapping;
+    vidTexture.rotation = -Math.PI / 2;
+    vidTexture.repeat.set(-4.12, 4.11);
+    vidTexture.offset.set(-0.045, 0.449);
+    vidTexture.colorSpace = THREE.SRGBColorSpace;
+    vidTexture.needsUpdate = true;
+  }, [vidTexture]);
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
+      if(progress === 100)
       if (child.name === "nintendoScreen") {
         if (selectedPage === "About" && imgTexture) {
           child.material = new THREE.MeshBasicMaterial({
@@ -103,18 +103,18 @@ const Room = ({ selectedPage, headline }) => {
         }
       }
 
-      // if (child.name === "screen") {
-      //   if (selectedPage === "Work") {
-      //     if(vidTexture){
-      //       child.material = new THREE.MeshBasicMaterial({
-      //         map: vidTexture,
-      //         toneMapped: false,
-      //       });
-      //     }
-      //   } else {
-      //     child.material = gltf.materials["black_main"];
-      //   }
-      // }
+      if (child.name === "screen") {
+        if (selectedPage === "Work") {
+          if(vidTexture){
+            child.material = new THREE.MeshBasicMaterial({
+              map: vidTexture,
+              toneMapped: false,
+            });
+          }
+        } else {
+          child.material = gltf.materials["black_main"];
+        }
+      }
 
       if (child.isMesh) {
         child.castShadow = true;
@@ -123,12 +123,11 @@ const Room = ({ selectedPage, headline }) => {
     });
   }, [
     gltf.scene,
-    // progress,
     imgTexture,
     gltf.materials,
     selectedPage,
-    // vidTexture,
-    // width,
+    vidTexture,
+    progress
   ]);
 
   // animation
