@@ -60,15 +60,15 @@ const Room = ({ selectedPage, headline }) => {
     }
   };
 
-  useEffect(() => {
-    setModelScale();
-    const handleResize = () => {
-      setModelScale();
-    };
+  // useEffect(() => {
+  //   setModelScale();
+  //   const handleResize = () => {
+  //     setModelScale();
+  //   };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
 
   useEffect(() => {
     imgTexture.wrapS = THREE.RepeatWrapping;
