@@ -10,10 +10,11 @@ import * as THREE from "three";
 const Room = ({ selectedPage, headline }) => {
   const roomRef = useRef();
   const mousePos = useRef({ x: 0, y: 0 });
-  const { progress } = useProgress();
+  const { progress, loaded, item } = useProgress();
   const width = window.innerWidth;
 
-  const gltf = useLoader(GLTFLoader, "./model/room.glb");
+  const gltf = useLoader(GLTFLoader, "./model/room_no_animation.glb");
+  
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
   const url = useMemo(() => {
@@ -35,7 +36,8 @@ const Room = ({ selectedPage, headline }) => {
     THREE.TextureLoader,
     "./assets/img/nintendoSetting.png",
   );
-  const vidTexture = useVideoTexture(url);
+
+  const vidTexture = useVideoTexture(url);  
 
   const setModelScale = () => {
     if (roomRef.current) {
@@ -101,18 +103,18 @@ const Room = ({ selectedPage, headline }) => {
         }
       }
 
-      // if (child.name === "screen") {
-      //   if (selectedPage === "Work") {
-      //     if(vidTexture){
-      //       child.material = new THREE.MeshBasicMaterial({
-      //         map: vidTexture,
-      //         toneMapped: false,
-      //       });
-      //     }
-      //   } else {
-      //     child.material = gltf.materials["black_main"];
-      //   }
-      // }
+      if (child.name === "screen") {
+        if (selectedPage === "Work") {
+          if(vidTexture){
+            child.material = new THREE.MeshBasicMaterial({
+              map: vidTexture,
+              toneMapped: false,
+            });
+          }
+        } else {
+          child.material = gltf.materials["black_main"];
+        }
+      }
 
       if (child.isMesh) {
         child.castShadow = true;
@@ -130,35 +132,41 @@ const Room = ({ selectedPage, headline }) => {
   ]);
 
   //animation
+  // useEffect(() => {
+  //   if (selectedPage === "Contact" && actions["phoneRing"]) {
+  //     const action = actions["phoneRing"];
+  //     action.loop = THREE.LoopOnce;
+  //     const playAnim = setInterval(() => {
+  //       action.reset().play();
+  //     }, 3500);
+
+  //     return () => {
+  //       if (playAnim) {
+  //         clearInterval(playAnim);
+  //       }
+  //     };
+  //   }
+
+  //   if (names != null) {
+  //     if (progress === 100) {
+  //       const timeout = setTimeout(() => {
+  //         names.forEach((clip) => {
+  //           const action = actions[clip];
+  //           action.setLoop(THREE.LoopOnce);
+  //           action.clampWhenFinished = true;
+  //           action.play();
+  //         });
+  //       }, 3000);
+  //       return () => clearTimeout(timeout);
+  //     }
+  //   }
+  // }, [actions, names, progress, selectedPage]);
+
   useEffect(() => {
-    if (selectedPage === "Contact" && actions["phoneRing"]) {
-      const action = actions["phoneRing"];
-      action.loop = THREE.LoopOnce;
-      const playAnim = setInterval(() => {
-        action.reset().play();
-      }, 3500);
-
-      return () => {
-        if (playAnim) {
-          clearInterval(playAnim);
-        }
-      };
-    }
-
-    if (names != null) {
-      if (progress === 100) {
-        const timeout = setTimeout(() => {
-          names.forEach((clip) => {
-            const action = actions[clip];
-            action.setLoop(THREE.LoopOnce);
-            action.clampWhenFinished = true;
-            action.play();
-          });
-        }, 3000);
-        return () => clearTimeout(timeout);
-      }
-    }
-  }, [actions, names, progress, selectedPage]);
+    console.log('progress: ', progress);
+    console.log('items: ', item);
+    console.log('loaded: ', loaded);
+  }, [progress, item, loaded]);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
