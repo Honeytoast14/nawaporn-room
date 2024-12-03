@@ -162,29 +162,29 @@ const Room = ({ selectedPage, headline }) => {
   //   }
   // }, [actions, names, progress, selectedPage]);
 
-  useEffect(() => {
-    console.log('progress: ', progress);
-    console.log('items: ', item);
-    console.log('loaded: ', loaded);
-  }, [progress, item, loaded]);
+  // useEffect(() => {
+  //   console.log('progress: ', progress);
+  //   console.log('items: ', item);
+  //   console.log('loaded: ', loaded);
+  // }, [progress, item, loaded]);
 
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      const x = (event.clientX / window.innerWidth) * 2 - 1;
-      const y = -(event.clientY / window.innerHeight) * 2 + 1;
-      mousePos.current = { x, y };
-    };
+  // useEffect(() => {
+  //   const handleMouseMove = (event) => {
+  //     const x = (event.clientX / window.innerWidth) * 2 - 1;
+  //     const y = -(event.clientY / window.innerHeight) * 2 + 1;
+  //     mousePos.current = { x, y };
+  //   };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  });
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   return () => window.removeEventListener("mousemove", handleMouseMove);
+  // });
 
-  useFrame(() => {
-    if (roomRef.current) {
-      roomRef.current.rotation.y = mousePos.current.x * 0.015;
-      roomRef.current.rotation.x = mousePos.current.y * 0.002;
-    }
-  });
+  // useFrame(() => {
+  //   if (roomRef.current) {
+  //     roomRef.current.rotation.y = mousePos.current.x * 0.015;
+  //     roomRef.current.rotation.x = mousePos.current.y * 0.002;
+  //   }
+  // });
   return (
     <>
       <primitive object={gltf.scene} scale={1} ref={roomRef} />

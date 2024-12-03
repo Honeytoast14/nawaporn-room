@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import Room from "./Room";
 import Camera from "./Camera";
+import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 // import { useProgress } from '@react-three/drei';
 
 function SunLight() {
@@ -79,7 +80,15 @@ export default function Experience({ selectedPage, headline }) {
       <SunLight />
       <ambientLight color={"#ffffff"} intensity={0.8} />
       <Room selectedPage={selectedPage} headline={headline} />
-      <Camera selectedPage={selectedPage} />
+      {/* <Camera selectedPage={selectedPage} /> */}
+      <OrthographicCamera
+        makeDefault
+        position={[5.5,5,5]}
+        zoom={200}
+        near={0.1}
+        far={1000}
+      />
+      <OrbitControls enabled={false} />
       <mesh
         rotation-x={-Math.PI / 2}
         // position={[0, planePosition, 0]}
