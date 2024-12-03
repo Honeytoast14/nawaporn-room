@@ -18,7 +18,7 @@ export default function App() {
 
   return (
     <div className="App w-shv h-svh">
-      <LoadingScreen />
+      {/* <LoadingScreen /> */}
       <Canvas
         shadows
         gl={{
