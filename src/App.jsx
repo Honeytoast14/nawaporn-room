@@ -26,14 +26,14 @@ export default function App() {
           toneMappingExposure: 1.4,
         }}
       >
-        <Suspense fallback={null}>
+        {/* <Suspense fallback={null}> */}
           <Experience selectedPage={select} headline={headline} />
-        </Suspense>
+        {/* </Suspense> */}
       </Canvas>
-      <Navbar onSelected={setSelect} selectedPage={select} />
+      {/* <Navbar onSelected={setSelect} selectedPage={select} />
       {select === "About" && <About />}
       {select === "Contact" && <Contact />}
-      {select === "Work" && <Work setHeadline={setHeadline} />}
+      {select === "Work" && <Work setHeadline={setHeadline} />} */}
     </div>
   );
 }
