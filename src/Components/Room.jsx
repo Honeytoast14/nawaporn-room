@@ -13,7 +13,7 @@ const Room = ({ selectedPage, headline }) => {
   const { progress, loaded, item } = useProgress();
   const width = window.innerWidth;
 
-  const gltf = useLoader(GLTFLoader, "./model/room_no_animation.glb");
+  const gltf = useLoader(GLTFLoader, "/model/room.glb");
   
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
@@ -132,35 +132,35 @@ const Room = ({ selectedPage, headline }) => {
   ]);
 
   //animation
-  // useEffect(() => {
-  //   if (selectedPage === "Contact" && actions["phoneRing"]) {
-  //     const action = actions["phoneRing"];
-  //     action.loop = THREE.LoopOnce;
-  //     const playAnim = setInterval(() => {
-  //       action.reset().play();
-  //     }, 3500);
+  useEffect(() => {
+    if (selectedPage === "Contact" && actions["phoneRing"]) {
+      const action = actions["phoneRing"];
+      action.loop = THREE.LoopOnce;
+      const playAnim = setInterval(() => {
+        action.reset().play();
+      }, 3500);
 
-  //     return () => {
-  //       if (playAnim) {
-  //         clearInterval(playAnim);
-  //       }
-  //     };
-  //   }
+      return () => {
+        if (playAnim) {
+          clearInterval(playAnim);
+        }
+      };
+    }
 
-  //   if (names != null) {
-  //     if (progress === 100) {
-  //       const timeout = setTimeout(() => {
-  //         names.forEach((clip) => {
-  //           const action = actions[clip];
-  //           action.setLoop(THREE.LoopOnce);
-  //           action.clampWhenFinished = true;
-  //           action.play();
-  //         });
-  //       }, 3000);
-  //       return () => clearTimeout(timeout);
-  //     }
-  //   }
-  // }, [actions, names, progress, selectedPage]);
+    if (names != null) {
+      if (progress === 100) {
+        const timeout = setTimeout(() => {
+          names.forEach((clip) => {
+            const action = actions[clip];
+            action.setLoop(THREE.LoopOnce);
+            action.clampWhenFinished = true;
+            action.play();
+          });
+        }, 3000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [actions, names, progress, selectedPage]);
 
   useEffect(() => {
     console.log('progress: ', progress);
