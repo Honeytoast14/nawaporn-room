@@ -88,50 +88,50 @@ const Room = ({ selectedPage, headline }) => {
   //   vidTexture.needsUpdate = true;
   // }, [vidTexture]);
 
-  // useEffect(() => {
-  //   gltf.scene.traverse((child) => {
-  //     // if (child.name === "nintendoScreen") {
-  //     //   if (selectedPage === "About" && imgTexture) {
-  //     //     child.material = new THREE.MeshBasicMaterial({
-  //     //       map: imgTexture,
-  //     //       toneMapped: false,
-  //     //     });
-  //     //   } else {
-  //     //     {
-  //     //       child.material = gltf.materials["black_main"];
-  //     //     }
-  //     //   }
-  //     // }
+  useEffect(() => {
+    gltf.scene.traverse((child) => {
+      // if (child.name === "nintendoScreen") {
+      //   if (selectedPage === "About" && imgTexture) {
+      //     child.material = new THREE.MeshBasicMaterial({
+      //       map: imgTexture,
+      //       toneMapped: false,
+      //     });
+      //   } else {
+      //     {
+      //       child.material = gltf.materials["black_main"];
+      //     }
+      //   }
+      // }
 
-  //     // if (child.name === "screen") {
-  //     //   if (selectedPage === "Work") {
-  //     //     if(vidTexture){
-  //     //       child.material = new THREE.MeshBasicMaterial({
-  //     //         map: vidTexture,
-  //     //         toneMapped: false,
-  //     //       });
-  //     //     }
-  //     //   } else {
-  //     //     child.material = gltf.materials["black_main"];
-  //     //   }
-  //     // }
+      // if (child.name === "screen") {
+      //   if (selectedPage === "Work") {
+      //     if(vidTexture){
+      //       child.material = new THREE.MeshBasicMaterial({
+      //         map: vidTexture,
+      //         toneMapped: false,
+      //       });
+      //     }
+      //   } else {
+      //     child.material = gltf.materials["black_main"];
+      //   }
+      // }
 
-  //     if (child.isMesh) {
-  //       child.castShadow = true;
-  //       child.receiveShadow = true;
-  //     }
-  //   });
-  // }, [
-  //   gltf.scene,
-  //   progress,
-  //   imgTexture,
-  //   gltf.materials,
-  //   selectedPage,
-  //   vidTexture,
-  //   width,
-  // ]);
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [
+    gltf.scene,
+    // progress,
+    // imgTexture,
+    // gltf.materials,
+    // selectedPage,
+    // vidTexture,
+    // width,
+  ]);
 
-  //animation
+  // animation
   // useEffect(() => {
   //   if (selectedPage === "Contact" && actions["phoneRing"]) {
   //     const action = actions["phoneRing"];
