@@ -39,36 +39,36 @@ const Room = ({ selectedPage, headline }) => {
 
   // const vidTexture = useVideoTexture(url);  
 
-  // const setModelScale = () => {
-  //   if (roomRef.current) {
-  //     const width = window.innerWidth;
-  //     const height = window.innerHeight;
+  const setModelScale = () => {
+    if (roomRef.current) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
-  //     if (height > 600) {
-  //       if (width > 1024) {
-  //         roomRef.current.scale.set(1, 1, 1);
-  //       } else if (width >= 768) {
-  //         roomRef.current.scale.set(0.8, 0.8, 0.8);
-  //       } else {
-  //         roomRef.current.scale.set(0.5, 0.5, 0.5);
-  //       }
-  //     } else if (height > 450) {
-  //       roomRef.current.scale.set(0.7, 0.7, 0.7);
-  //     } else {
-  //       roomRef.current.scale.set(0.5, 0.5, 0.5);
-  //     }
-  //   }
-  // };
+      if (height > 600) {
+        if (width > 1024) {
+          roomRef.current.scale.set(1, 1, 1);
+        } else if (width >= 768) {
+          roomRef.current.scale.set(0.8, 0.8, 0.8);
+        } else {
+          roomRef.current.scale.set(0.5, 0.5, 0.5);
+        }
+      } else if (height > 450) {
+        roomRef.current.scale.set(0.7, 0.7, 0.7);
+      } else {
+        roomRef.current.scale.set(0.5, 0.5, 0.5);
+      }
+    }
+  };
 
-  // useEffect(() => {
-  //   setModelScale();
-  //   const handleResize = () => {
-  //     setModelScale();
-  //   };
+  useEffect(() => {
+    setModelScale();
+    const handleResize = () => {
+      setModelScale();
+    };
 
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // useEffect(() => {
   //   imgTexture.wrapS = THREE.RepeatWrapping;
@@ -162,29 +162,23 @@ const Room = ({ selectedPage, headline }) => {
   //   }
   // }, [actions, names, progress, selectedPage]);
 
-  // useEffect(() => {
-  //   console.log('progress: ', progress);
-  //   console.log('items: ', item);
-  //   console.log('loaded: ', loaded);
-  // }, [progress, item, loaded]);
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
+      mousePos.current = { x, y };
+    };
 
-  // useEffect(() => {
-  //   const handleMouseMove = (event) => {
-  //     const x = (event.clientX / window.innerWidth) * 2 - 1;
-  //     const y = -(event.clientY / window.innerHeight) * 2 + 1;
-  //     mousePos.current = { x, y };
-  //   };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  });
 
-  //   window.addEventListener("mousemove", handleMouseMove);
-  //   return () => window.removeEventListener("mousemove", handleMouseMove);
-  // });
-
-  // useFrame(() => {
-  //   if (roomRef.current) {
-  //     roomRef.current.rotation.y = mousePos.current.x * 0.015;
-  //     roomRef.current.rotation.x = mousePos.current.y * 0.002;
-  //   }
-  // });
+  useFrame(() => {
+    if (roomRef.current) {
+      roomRef.current.rotation.y = mousePos.current.x * 0.015;
+      roomRef.current.rotation.x = mousePos.current.y * 0.002;
+    }
+  });
   return (
     <>
       <primitive object={gltf.scene} scale={1} ref={roomRef} />

@@ -80,19 +80,10 @@ export default function Experience({ selectedPage, headline }) {
       <SunLight />
       <ambientLight color={"#ffffff"} intensity={0.8} />
       <Room selectedPage={selectedPage} headline={headline} />
-      {/* <Camera selectedPage={selectedPage} /> */}
-      <OrthographicCamera
-        makeDefault
-        position={[5.5,5,5]}
-        zoom={200}
-        near={0.1}
-        far={1000}
-      />
-      <OrbitControls enabled={false} />
+      <Camera selectedPage={selectedPage} />
       <mesh
         rotation-x={-Math.PI / 2}
-        // position={[0, planePosition, 0]}
-        position={[0, -1.3, 0]}
+        position={[0, planePosition, 0]}
         receiveShadow
       >
         <planeGeometry args={[100, 100]} />
