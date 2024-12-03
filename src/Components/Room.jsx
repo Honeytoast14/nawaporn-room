@@ -17,48 +17,48 @@ const Room = ({ selectedPage, headline }) => {
   
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
-  const url = useMemo(() => {
-    switch (headline) {
-      case "Touch The Wood":
-        return "./assets/videos/touchTheWood.mp4";
-      case "Solar System":
-        return "./assets/videos/solar.mp4";
-      case "Learn2Safe":
-        return "./assets/videos/learn2safe.mp4";
-      case "QALLZ":
-        return "./assets/videos/qallz.mp4";
-      default:
-        return console.error("no vid");
-    }
-  }, [headline]);
+  // const url = useMemo(() => {
+  //   switch (headline) {
+  //     case "Touch The Wood":
+  //       return "./assets/videos/touchTheWood.mp4";
+  //     case "Solar System":
+  //       return "./assets/videos/solar.mp4";
+  //     case "Learn2Safe":
+  //       return "./assets/videos/learn2safe.mp4";
+  //     case "QALLZ":
+  //       return "./assets/videos/qallz.mp4";
+  //     default:
+  //       return console.error("no vid");
+  //   }
+  // }, [headline]);
 
-  const imgTexture = useLoader(
-    THREE.TextureLoader,
-    "./assets/img/nintendoSetting.png",
-  );
+  // const imgTexture = useLoader(
+  //   THREE.TextureLoader,
+  //   "./assets/img/nintendoSetting.png",
+  // );
 
-  const vidTexture = useVideoTexture(url);  
+  // const vidTexture = useVideoTexture(url);  
 
-  const setModelScale = () => {
-    if (roomRef.current) {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
+  // const setModelScale = () => {
+  //   if (roomRef.current) {
+  //     const width = window.innerWidth;
+  //     const height = window.innerHeight;
 
-      if (height > 600) {
-        if (width > 1024) {
-          roomRef.current.scale.set(1, 1, 1);
-        } else if (width >= 768) {
-          roomRef.current.scale.set(0.8, 0.8, 0.8);
-        } else {
-          roomRef.current.scale.set(0.5, 0.5, 0.5);
-        }
-      } else if (height > 450) {
-        roomRef.current.scale.set(0.7, 0.7, 0.7);
-      } else {
-        roomRef.current.scale.set(0.5, 0.5, 0.5);
-      }
-    }
-  };
+  //     if (height > 600) {
+  //       if (width > 1024) {
+  //         roomRef.current.scale.set(1, 1, 1);
+  //       } else if (width >= 768) {
+  //         roomRef.current.scale.set(0.8, 0.8, 0.8);
+  //       } else {
+  //         roomRef.current.scale.set(0.5, 0.5, 0.5);
+  //       }
+  //     } else if (height > 450) {
+  //       roomRef.current.scale.set(0.7, 0.7, 0.7);
+  //     } else {
+  //       roomRef.current.scale.set(0.5, 0.5, 0.5);
+  //     }
+  //   }
+  // };
 
   // useEffect(() => {
   //   setModelScale();
@@ -70,66 +70,66 @@ const Room = ({ selectedPage, headline }) => {
   //   return () => window.removeEventListener("resize", handleResize);
   // }, []);
 
-  useEffect(() => {
-    imgTexture.wrapS = THREE.RepeatWrapping;
-    imgTexture.wrapT = THREE.RepeatWrapping;
-    imgTexture.rotation = 2 * Math.PI;
-    imgTexture.colorSpace = THREE.SRGBColorSpace;
-    imgTexture.flipY = false;
-  }, [imgTexture]);
+  // useEffect(() => {
+  //   imgTexture.wrapS = THREE.RepeatWrapping;
+  //   imgTexture.wrapT = THREE.RepeatWrapping;
+  //   imgTexture.rotation = 2 * Math.PI;
+  //   imgTexture.colorSpace = THREE.SRGBColorSpace;
+  //   imgTexture.flipY = false;
+  // }, [imgTexture]);
 
-  useEffect(() => {
-    vidTexture.wrapS = THREE.RepeatWrapping;
-    vidTexture.wrapT = THREE.RepeatWrapping;
-    vidTexture.rotation = -Math.PI / 2;
-    vidTexture.repeat.set(-4.12, 4.11);
-    vidTexture.offset.set(-0.045, 0.449);
-    vidTexture.colorSpace = THREE.SRGBColorSpace;
-    vidTexture.needsUpdate = true;
-  }, [vidTexture]);
+  // useEffect(() => {
+  //   vidTexture.wrapS = THREE.RepeatWrapping;
+  //   vidTexture.wrapT = THREE.RepeatWrapping;
+  //   vidTexture.rotation = -Math.PI / 2;
+  //   vidTexture.repeat.set(-4.12, 4.11);
+  //   vidTexture.offset.set(-0.045, 0.449);
+  //   vidTexture.colorSpace = THREE.SRGBColorSpace;
+  //   vidTexture.needsUpdate = true;
+  // }, [vidTexture]);
 
-  useEffect(() => {
-    gltf.scene.traverse((child) => {
-      // if (child.name === "nintendoScreen") {
-      //   if (selectedPage === "About" && imgTexture) {
-      //     child.material = new THREE.MeshBasicMaterial({
-      //       map: imgTexture,
-      //       toneMapped: false,
-      //     });
-      //   } else {
-      //     {
-      //       child.material = gltf.materials["black_main"];
-      //     }
-      //   }
-      // }
+  // useEffect(() => {
+  //   gltf.scene.traverse((child) => {
+  //     // if (child.name === "nintendoScreen") {
+  //     //   if (selectedPage === "About" && imgTexture) {
+  //     //     child.material = new THREE.MeshBasicMaterial({
+  //     //       map: imgTexture,
+  //     //       toneMapped: false,
+  //     //     });
+  //     //   } else {
+  //     //     {
+  //     //       child.material = gltf.materials["black_main"];
+  //     //     }
+  //     //   }
+  //     // }
 
-      // if (child.name === "screen") {
-      //   if (selectedPage === "Work") {
-      //     if(vidTexture){
-      //       child.material = new THREE.MeshBasicMaterial({
-      //         map: vidTexture,
-      //         toneMapped: false,
-      //       });
-      //     }
-      //   } else {
-      //     child.material = gltf.materials["black_main"];
-      //   }
-      // }
+  //     // if (child.name === "screen") {
+  //     //   if (selectedPage === "Work") {
+  //     //     if(vidTexture){
+  //     //       child.material = new THREE.MeshBasicMaterial({
+  //     //         map: vidTexture,
+  //     //         toneMapped: false,
+  //     //       });
+  //     //     }
+  //     //   } else {
+  //     //     child.material = gltf.materials["black_main"];
+  //     //   }
+  //     // }
 
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-  }, [
-    gltf.scene,
-    progress,
-    imgTexture,
-    gltf.materials,
-    selectedPage,
-    vidTexture,
-    width,
-  ]);
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  // }, [
+  //   gltf.scene,
+  //   progress,
+  //   imgTexture,
+  //   gltf.materials,
+  //   selectedPage,
+  //   vidTexture,
+  //   width,
+  // ]);
 
   //animation
   // useEffect(() => {
