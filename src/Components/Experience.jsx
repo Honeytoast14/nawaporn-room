@@ -82,7 +82,8 @@ export default function Experience({ selectedPage, headline }) {
       <Camera selectedPage={selectedPage} />
       <mesh
         rotation-x={-Math.PI / 2}
-        position={[0, planePosition, 0]}
+        // position={[0, planePosition, 0]}
+        position={[0, -1.3, 0]}
         receiveShadow
       >
         <planeGeometry args={[100, 100]} />
