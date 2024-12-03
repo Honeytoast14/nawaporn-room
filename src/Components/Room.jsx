@@ -132,35 +132,35 @@ const Room = ({ selectedPage, headline }) => {
   ]);
 
   // animation
-  // useEffect(() => {
-  //   if (selectedPage === "Contact" && actions["phoneRing"]) {
-  //     const action = actions["phoneRing"];
-  //     action.loop = THREE.LoopOnce;
-  //     const playAnim = setInterval(() => {
-  //       action.reset().play();
-  //     }, 3500);
+  useEffect(() => {
+    if (selectedPage === "Contact" && actions["phoneRing"]) {
+      const action = actions["phoneRing"];
+      action.loop = THREE.LoopOnce;
+      const playAnim = setInterval(() => {
+        action.reset().play();
+      }, 3500);
 
-  //     return () => {
-  //       if (playAnim) {
-  //         clearInterval(playAnim);
-  //       }
-  //     };
-  //   }
+      return () => {
+        if (playAnim) {
+          clearInterval(playAnim);
+        }
+      };
+    }
 
-  //   if (names != null) {
-  //     if (progress === 100) {
-  //       const timeout = setTimeout(() => {
-  //         names.forEach((clip) => {
-  //           const action = actions[clip];
-  //           action.setLoop(THREE.LoopOnce);
-  //           action.clampWhenFinished = true;
-  //           action.play();
-  //         });
-  //       }, 3000);
-  //       return () => clearTimeout(timeout);
-  //     }
-  //   }
-  // }, [actions, names, progress, selectedPage]);
+    if (names != null) {
+      if (progress === 100) {
+        const timeout = setTimeout(() => {
+          names.forEach((clip) => {
+            const action = actions[clip];
+            action.setLoop(THREE.LoopOnce);
+            action.clampWhenFinished = true;
+            action.play();
+          });
+        }, 3000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [actions, names, progress, selectedPage]);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
