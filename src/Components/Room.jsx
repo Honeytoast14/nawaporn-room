@@ -13,7 +13,7 @@ const Room = ({ selectedPage, headline }) => {
   const { progress, loaded, item } = useProgress();
   const width = window.innerWidth;
 
-  const gltf = useLoader(GLTFLoader, "/model/room_no_animation.glb");
+  const gltf = useLoader(GLTFLoader, "/model/room.glb");
   
   const { actions, names } = useAnimations(gltf.animations, roomRef);
 
@@ -32,10 +32,10 @@ const Room = ({ selectedPage, headline }) => {
   //   }
   // }, [headline]);
 
-  // const imgTexture = useLoader(
-  //   THREE.TextureLoader,
-  //   "./assets/img/nintendoSetting.png",
-  // );
+  const imgTexture = useLoader(
+    THREE.TextureLoader,
+    "./assets/img/nintendoSetting.png",
+  );
 
   // const vidTexture = useVideoTexture(url);  
 
@@ -70,13 +70,13 @@ const Room = ({ selectedPage, headline }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // useEffect(() => {
-  //   imgTexture.wrapS = THREE.RepeatWrapping;
-  //   imgTexture.wrapT = THREE.RepeatWrapping;
-  //   imgTexture.rotation = 2 * Math.PI;
-  //   imgTexture.colorSpace = THREE.SRGBColorSpace;
-  //   imgTexture.flipY = false;
-  // }, [imgTexture]);
+  useEffect(() => {
+    imgTexture.wrapS = THREE.RepeatWrapping;
+    imgTexture.wrapT = THREE.RepeatWrapping;
+    imgTexture.rotation = 2 * Math.PI;
+    imgTexture.colorSpace = THREE.SRGBColorSpace;
+    imgTexture.flipY = false;
+  }, [imgTexture]);
 
   // useEffect(() => {
   //   vidTexture.wrapS = THREE.RepeatWrapping;
@@ -90,18 +90,18 @@ const Room = ({ selectedPage, headline }) => {
 
   useEffect(() => {
     gltf.scene.traverse((child) => {
-      // if (child.name === "nintendoScreen") {
-      //   if (selectedPage === "About" && imgTexture) {
-      //     child.material = new THREE.MeshBasicMaterial({
-      //       map: imgTexture,
-      //       toneMapped: false,
-      //     });
-      //   } else {
-      //     {
-      //       child.material = gltf.materials["black_main"];
-      //     }
-      //   }
-      // }
+      if (child.name === "nintendoScreen") {
+        if (selectedPage === "About" && imgTexture) {
+          child.material = new THREE.MeshBasicMaterial({
+            map: imgTexture,
+            toneMapped: false,
+          });
+        } else {
+          {
+            child.material = gltf.materials["black_main"];
+          }
+        }
+      }
 
       // if (child.name === "screen") {
       //   if (selectedPage === "Work") {
@@ -124,9 +124,9 @@ const Room = ({ selectedPage, headline }) => {
   }, [
     gltf.scene,
     // progress,
-    // imgTexture,
-    // gltf.materials,
-    // selectedPage,
+    imgTexture,
+    gltf.materials,
+    selectedPage,
     // vidTexture,
     // width,
   ]);
