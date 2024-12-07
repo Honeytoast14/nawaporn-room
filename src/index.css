@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.white-background {
+  @apply absolute right-0 top-0 z-10 h-auto w-full bg-main-white text-main-black lg:w-6/12;
+}
+.white-background-left {
+  @apply absolute left-0 top-0 z-10 h-full w-full bg-main-white text-main-black lg:w-6/12;
+}
+
+h1 {
+  @apply text-5xl 2xl:text-7xl;
+}
+
+.label-style {
+  @apply mb-2 block;
+}
+
+.hover-button {
+  @apply duration-150 ease-in-out hover:scale-110 hover:border hover:border-solid hover:border-main-black hover:duration-150;
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+}
