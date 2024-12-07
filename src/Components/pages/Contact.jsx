@@ -119,19 +119,23 @@ export default function Contact() {
   const form = useRef();
   const methods = useForm();
   var [showPopUp, setShowPopUp] = useState(false);
-  const serviceId = import.meta.env.REACT_APP_SERVICE_ID;
-  const templateId = import.meta.env.REACT_APP_TEMPLATE_ID;
-  const pbKey = import.meta.env.REACT_APP_PUBLIC_KEY;
+  const serviceId = import.meta.env.VITE_SERVICE_ID;
+  const templateId = import.meta.env.VITE_TEMPLATE_ID;
+  const pbKey = import.meta.env.VITE_PUBLIC_KEY;
   const sendEmail = (data, e) => {
     e.preventDefault();
 
     emailjs
-      .sendForm(serviceId, templateId, form.current, {
-        publicKey: pbKey,
-      })
+    .sendForm(serviceId, templateId, form.current, {
+      publicKey: pbKey,
+    })
       .then(() => {
         setShowPopUp(true);
-      });
+      },
+      (error) => {
+        console.log('FAILED...', error.text);
+      },
+    )
   };
 
   const name_validation = {
