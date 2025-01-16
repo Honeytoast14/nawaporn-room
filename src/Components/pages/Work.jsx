@@ -42,7 +42,7 @@ const WorkItem = ({
         <h1 className="head mb-4 text-2xl font-bold">{headline}</h1>
         <p className="text-lg xl:text-xl">{caption}</p>
         {caption2 !== null ? (
-          <p className="mb-7 text-lg font-semibold text-red-500 xl:text-xl">
+          <p className="mb-7 text-lg font-semibold text-red-500 xl:text-xl italic">
             {caption2}
           </p>
         ) : (
@@ -65,26 +65,26 @@ const Work = ({ setHeadline }) => {
     {
       headline: "Touch The Wood",
       caption:
-        "Touch The Wood is a thesis game project. In the game, players will play as an orange cat with siblings that fall into a different dimension. While confused, the player's siblings are kidnapped by a villain. The player must explore, solve puzzles, and search for stories in various locations to find their siblings and return to the original world.",
-      caption2: "**This game is only available in Thai language.**",
+        "Touch The Wood is a thesis game project where players take on the role of an orange cat who along with its siblings falls into a different dimension. While confused, the siblings are kidnapped by a villain. Players must explore, solve puzzles, and uncover stories in various locations to rescue the siblings and return to their original world.",
+      caption2: "Note: This game is available only in Thai.",
       link: "https://drive.google.com/drive/folders/1TxpDMDayaJMrF_gY0zFZqorCZ20y_DK3?usp=sharing",
     },
     {
       headline: "Solar System",
       caption:
-        "Solar System is a website about the solar system in 3D that tells information about each planet and also has sounds from that planet.",
+        "Solar System is a 3D interactive website about the solar system. It provides detailed information about each planet and features audio that represents the unique sounds of each planet.",
       link: "https://ssolar-system.web.app/",
     },
     {
       headline: "Learn2Safe",
       caption:
-        "A sex education website that has videos, quizzes, infographics, and tests to see if you understand the content. The website covers topics such as STDs, safe sex, and risky situations and skills.",
+        "Learn2Safe is a sex education website featuring videos, quizzes, infographics, and tests to assess users understanding. The website covers topics such as STDs, safe sex practices, and risky situations, as well as practical skills for safety and awareness.",
       link: "https://learn2safe.web.app/",
     },
     {
       headline: "QALLZ",
       caption:
-        "I have been involved in creating a mock-up website for selling my work and my friends' work. This website was assigned by my professor during college.",
+        "QALLZ is a mock-up website designed for selling my work and the work of my friends. This project was assigned by my professor during my time in college.",
       link: "https://qallz-real.web.app/",
     },
   ];

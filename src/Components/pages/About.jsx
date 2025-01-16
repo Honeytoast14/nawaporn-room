@@ -12,16 +12,18 @@ const About = () => {
         </h1>
         <div className="w-full flex-1 bg-main-green sm:[width:77%] md:w-4/5 lg:[width:70%] xl:w-9/12">
           <p className="px-12 pb-16 pt-24 text-lg 2xl:text-xl">
-            Hello, my name is Nawaporn Sriprathet, a Front-end Web Developer
-            skilled in React and Tailwind CSS. As a recent university graduate,
-            I’m stepping seriously into the web development field, focusing on
-            creating responsive, user-friendly websites with clean design.
+            Hello! <br />
+            My name is Nawaporn Sriprathet, and I’m a passionate Front-end Web
+            Developer specializing in React and Tailwind CSS. As a recent
+            university graduate, I’m diving headfirst into the web development
+            field, dedicated to crafting responsive, user-friendly websites with
+            clean and modern designs.
             <br />
             <br />
-            Though new to the field, I’m committed to learning and growing my
-            skills and am open to opportunities that will further my
-            development. In my free time, I enjoy playing games and listening to
-            music, which keep me energized and inspired. &#128523;
+            Although I’m at the beginning of my journey, I’m eager to learn,
+            grow, and embrace opportunities that challenge me to develop
+            further. When I’m not coding, I enjoy playing games and listening to
+            music—activities that keep me inspired and energized. &#128523;
           </p>
         </div>
       </div>
